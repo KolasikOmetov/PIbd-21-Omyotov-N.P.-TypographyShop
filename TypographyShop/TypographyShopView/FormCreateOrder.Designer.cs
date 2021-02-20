@@ -63,6 +63,7 @@
 			this.textBoxSum.Enabled = false;
 			this.textBoxSum.Location = new System.Drawing.Point(96, 79);
 			this.textBoxSum.Name = "textBoxSum";
+			this.textBoxSum.ReadOnly = true;
 			this.textBoxSum.Size = new System.Drawing.Size(218, 20);
 			this.textBoxSum.TabIndex = 20;
 			this.textBoxSum.TextChanged += new System.EventHandler(this.TextBoxCount_TextChanged);
@@ -82,6 +83,7 @@
 			this.textBoxCount.Name = "textBoxCount";
 			this.textBoxCount.Size = new System.Drawing.Size(218, 20);
 			this.textBoxCount.TabIndex = 18;
+			this.textBoxCount.TextChanged += new System.EventHandler(this.TextBoxCount_TextChanged);
 			// 
 			// labelCount
 			// 
