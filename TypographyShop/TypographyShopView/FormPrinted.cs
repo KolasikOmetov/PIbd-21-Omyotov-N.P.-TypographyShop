@@ -54,7 +54,7 @@ namespace TypographyShopView
 					dataGridView.Rows.Clear();
 					foreach (var pc in printedComponents)
 					{
-						dataGridView.Rows.Add(new object[] { pc.Value.Item1, pc.Value.Item2 });
+						dataGridView.Rows.Add(new object[] { pc.Key, pc.Value.Item1, pc.Value.Item2 });
 					}
 				}
 			}
