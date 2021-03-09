@@ -3,9 +3,6 @@ using System.Collections.Generic;
 
 namespace TypographyShopBusinessLogic.BindingModels
 {
-    /// <summary>
-    /// Изделие, изготавливаемое в магазине
-    /// </summary>
     public class StoreBindingModel
     {
         public int? Id { get; set; }
