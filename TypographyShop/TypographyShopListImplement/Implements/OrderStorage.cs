@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TypographyShopBusinessLogic.BindingModels;
 using TypographyShopBusinessLogic.Interfaces;
 using TypographyShopBusinessLogic.ViewModels;
+using System.Linq;
 
 namespace TypographyShopListImplement.Implements
 {
@@ -109,6 +110,7 @@ namespace TypographyShopListImplement.Implements
             {
                 Id = Order.Id,
                 PrintedId = Order.PrintedId,
+                PrintedName=source.Printeds.FirstOrDefault(p=>p.Id==Order.PrintedId)?.PrintedName,
                 Count = Order.Count,
                 Status = Order.Status,
                 Sum = Order.Sum,
