@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using TypographyShopDatabaseImplement.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace TypographyShopDatabaseImplement.Implements
 {
@@ -19,7 +20,7 @@ namespace TypographyShopDatabaseImplement.Implements
                 {
                     Id = rec.Id,
                     PrintedId = rec.PrintedId,
-                    PrintedName = context.Printeds.FirstOrDefault(pr => pr.Id == rec.PrintedId).PrintedName,
+                    PrintedName = context.Printeds.Include(pr => pr.Orders).FirstOrDefault(pr => pr.Id == rec.PrintedId).PrintedName,
                     Count = rec.Count,
                     Sum = rec.Sum,
                     Status = rec.Status,
@@ -43,7 +44,7 @@ namespace TypographyShopDatabaseImplement.Implements
                 {
                     Id = rec.Id,
                     PrintedId = rec.PrintedId,
-                    PrintedName = context.Printeds.FirstOrDefault(pr => pr.Id == rec.PrintedId).PrintedName,
+                    PrintedName = context.Printeds.Include(pr => pr.Orders).FirstOrDefault(pr => pr.Id == rec.PrintedId).PrintedName,
                     Count = rec.Count,
                     Sum = rec.Sum,
                     Status = rec.Status,
@@ -68,7 +69,7 @@ namespace TypographyShopDatabaseImplement.Implements
                 {
                     Id = order.Id,
                     PrintedId = order.PrintedId,
-                    PrintedName = context.Printeds.FirstOrDefault(rec => rec.Id == order.PrintedId)?.PrintedName,
+                    PrintedName = context.Printeds.Include(pr => pr.Orders).FirstOrDefault(rec => rec.Id == order.PrintedId)?.PrintedName,
                     Count = order.Count,
                     Sum = order.Sum,
                     Status = order.Status,
@@ -78,6 +79,7 @@ namespace TypographyShopDatabaseImplement.Implements
                 null;
             }
         }
+        
         public void Insert(OrderBindingModel model)
         {
             using (var context = new TypographyShopDatabase())
@@ -144,7 +146,7 @@ namespace TypographyShopDatabaseImplement.Implements
                 Printed element = context.Printeds.FirstOrDefault(rec => rec.Id == model.PrintedId);
                 if (element != null)
                 {
-                    if(element.Orders == null)
+                    if (element.Orders == null)
                     {
                         element.Orders = new List<Order>();
                     }
