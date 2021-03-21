@@ -32,14 +32,14 @@ namespace TypographyShopDatabaseImplement.Implements
         }
         public List<OrderViewModel> GetFilteredList(OrderBindingModel model)
         {
-            if (model == null)
+            if (model == null || model.DateFrom == null || model.DateTo == null)
             {
                 return null;
             }
             using (var context = new TypographyShopDatabase())
             {
                 return context.Orders
-                .Where(rec => rec.PrintedId == model.PrintedId)
+                .Where(rec => rec.DateCreate >= model.DateFrom && rec.DateCreate <= model.DateTo)
                 .Select(rec => new OrderViewModel
                 {
                     Id = rec.Id,

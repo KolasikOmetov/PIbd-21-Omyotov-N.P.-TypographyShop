@@ -22,12 +22,12 @@ namespace TypographyShopFileImplement.Implements
         }
         public List<OrderViewModel> GetFilteredList(OrderBindingModel model)
         {
-            if (model == null)
+			if (model == null || model.DateFrom == null || model.DateTo == null)
             {
                 return null;
             }
             return source.Orders
-            .Where(rec => rec.DateCreate == model.DateCreate)
+            .Where(rec => rec.DateCreate >= model.DateFrom && rec.DateCreate <= model.DateTo)
             .Select(CreateModel)
             .ToList();
         }

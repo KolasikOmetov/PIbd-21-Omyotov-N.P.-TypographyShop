@@ -25,14 +25,14 @@ namespace TypographyShopListImplement.Implements
         }
         public List<OrderViewModel> GetFilteredList(OrderBindingModel model)
         {
-            if (model == null)
+            if (model == null || model.DateFrom == null || model.DateTo == null)
             {
                 return null;
             }
             List<OrderViewModel> result = new List<OrderViewModel>();
             foreach (var Order in source.Orders)
             {
-                if (Order.PrintedId == model.PrintedId)
+                if (Order.DateCreate >= model.DateFrom && Order.DateCreate <= model.DateTo)
                 {
                     result.Add(CreateModel(Order));
                 }
