@@ -10,13 +10,11 @@ namespace TypographyShopBusinessLogic.BusinessLogics
 {
     public class ReportLogic
     {
-        private readonly IComponentStorage _componentStorage;
         private readonly IPrintedStorage _printedStorage;
         private readonly IOrderStorage _orderStorage;
         public ReportLogic(IPrintedStorage printedStorage, IComponentStorage componentStorage, IOrderStorage orderStorage)
         {
             _printedStorage = printedStorage;
-            _componentStorage = componentStorage;
             _orderStorage = orderStorage;
         }
         /// <summary>
@@ -25,7 +23,6 @@ namespace TypographyShopBusinessLogic.BusinessLogics
         /// <returns></returns>
         public List<ReportPrintedComponentViewModel> GetPrintedComponent()
         {
-            var components = _componentStorage.GetFullList();
             var printeds = _printedStorage.GetFullList();
             var list = new List<ReportPrintedComponentViewModel>();
             foreach (var printed in printeds)
@@ -36,13 +33,10 @@ namespace TypographyShopBusinessLogic.BusinessLogics
                     Components = new List<Tuple<string, int>>(),
                     TotalCount = 0
                 };
-                foreach (var component in components)
+                foreach (var component in printed.PrintedComponents)
                 {
-                    if (printed.PrintedComponents.ContainsKey(component.Id))
-                    {
-                        record.Components.Add(new Tuple<string, int>(component.ComponentName, printed.PrintedComponents[component.Id].Item2));
-                        record.TotalCount += printed.PrintedComponents[component.Id].Item2;
-                    }
+                    record.Components.Add(new Tuple<string, int>(component.Value.Item1, component.Value.Item2));
+                    record.TotalCount += component.Value.Item2;
                 }
                 list.Add(record);
             }
