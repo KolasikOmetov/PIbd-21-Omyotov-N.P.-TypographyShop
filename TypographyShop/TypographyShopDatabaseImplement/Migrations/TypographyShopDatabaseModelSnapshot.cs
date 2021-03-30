@@ -35,6 +35,38 @@ namespace TypographyShopDatabaseImplement.Migrations
                     b.ToTable("Components");
                 });
 
+            modelBuilder.Entity("TypographyShopDatabaseImplement.Models.Order", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("DateCreate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DateImplement")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PrintedId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Sum")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PrintedId");
+
+                    b.ToTable("Orders");
+                });
+
             modelBuilder.Entity("TypographyShopDatabaseImplement.Models.Printed", b =>
                 {
                     b.Property<int>("Id")
@@ -79,36 +111,61 @@ namespace TypographyShopDatabaseImplement.Migrations
                     b.ToTable("PrintedComponents");
                 });
 
-            modelBuilder.Entity("TypographyShopDatabaseImplement.Models.Order", b =>
+            modelBuilder.Entity("TypographyShopDatabaseImplement.Models.Store", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Count")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("DateCreate")
+                    b.Property<DateTime>("DateCreation")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DateImplement")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("ResponsibleName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PrintedId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Sum")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<string>("StoreName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PrintedId");
+                    b.ToTable("Stores");
+                });
 
-                    b.ToTable("Orders");
+            modelBuilder.Entity("TypographyShopDatabaseImplement.Models.StoreComponent", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ComponentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StoreId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ComponentId");
+
+                    b.HasIndex("StoreId");
+
+                    b.ToTable("StoreComponents");
+                });
+
+            modelBuilder.Entity("TypographyShopDatabaseImplement.Models.Order", b =>
+                {
+                    b.HasOne("TypographyShopDatabaseImplement.Models.Printed", null)
+                        .WithMany("Orders")
+                        .HasForeignKey("PrintedId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("TypographyShopDatabaseImplement.Models.PrintedComponent", b =>
@@ -126,11 +183,17 @@ namespace TypographyShopDatabaseImplement.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("TypographyShopDatabaseImplement.Order", b =>
+            modelBuilder.Entity("TypographyShopDatabaseImplement.Models.StoreComponent", b =>
                 {
-                    b.HasOne("TypographyShopDatabaseImplement.Models.Printed", null)
-                        .WithMany("Orders")
-                        .HasForeignKey("PrintedId")
+                    b.HasOne("TypographyShopDatabaseImplement.Models.Component", "Component")
+                        .WithMany("StoreComponents")
+                        .HasForeignKey("ComponentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TypographyShopDatabaseImplement.Models.Store", "Store")
+                        .WithMany("StoreComponents")
+                        .HasForeignKey("StoreId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

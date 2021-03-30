@@ -97,7 +97,7 @@ namespace TypographyShopDatabaseImplement.Implements
                         context.SaveChanges();
                         transaction.Commit();
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         transaction.Rollback();
                         throw ex;
