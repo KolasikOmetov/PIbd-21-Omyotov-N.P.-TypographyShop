@@ -72,6 +72,7 @@ namespace TypographyShopFileImplement
                     {
                         Id = Convert.ToInt32(elem.Attribute("Id").Value),
                         PrintedId = Convert.ToInt32(elem.Element("PrintedId").Value),
+						ClientId = Convert.ToInt32(elem.Element("ClientId").Value),
                         Count = Convert.ToInt32(elem.Element("Count").Value),
                         Sum = Convert.ToDecimal(elem.Element("Sum").Value),
                         Status = (OrderStatus)Convert.ToInt32(elem.Element("Status").Value),
@@ -152,6 +153,7 @@ namespace TypographyShopFileImplement
                     xElement.Add(new XElement("Order",
                     new XAttribute("Id", order.Id),
                     new XElement("PrintedId", order.PrintedId),
+					new XElement("ClientId", order.ClientId),
                     new XElement("Count", order.Count),
                     new XElement("Sum", order.Sum),
                     new XElement("Status", (int)order.Status),
