@@ -204,7 +204,7 @@ namespace TypographyShopFileImplement
                     ));
                 }
                 XDocument xDocument = new XDocument(xElement);
-                xDocument.Save(ComponentFileName);
+                xDocument.Save(ClientFileName);
             }
         }
     }
