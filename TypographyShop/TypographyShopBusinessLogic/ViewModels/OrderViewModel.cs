@@ -14,11 +14,16 @@ namespace TypographyShopBusinessLogic.ViewModels
         [DataMember]
         public int Id { get; set; }
         [DataMember]
+        public int EmployeeId { get; set; }
+        [DataMember]
         public int ClientId { get; set; }
         [DataMember]
         public int PrintedId { get; set; }
         [DataMember]
-        [DisplayName("ФИО")]
+        [DisplayName("ФИО Работника")]
+        public string EmployeeFIO { get; set; }
+        [DataMember]
+        [DisplayName("ФИО Клиента")]
         public string ClientFIO { get; set; }
         [DataMember]
         [DisplayName("Изделие")]
