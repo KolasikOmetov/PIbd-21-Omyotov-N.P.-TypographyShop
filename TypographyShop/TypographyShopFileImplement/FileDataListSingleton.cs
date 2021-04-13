@@ -15,16 +15,19 @@ namespace TypographyShopFileImplement
         private readonly string OrderFileName = "Order.xml";
         private readonly string PrintedFileName = "Printed.xml";
         private readonly string ClientFileName = "Client.xml";
+        private readonly string EmployeeFileName = "Employee.xml";
         public List<Component> Components { get; set; }
         public List<Order> Orders { get; set; }
         public List<Printed> Printeds { get; set; }
         public List<Client> Clients { get; set; }
+        public List<Employee> Employees { get; set; }
         private FileDataListSingleton()
         {
             Components = LoadComponents();
             Orders = LoadOrders();
             Printeds = LoadPrinteds();
             Clients = LoadClients();
+            Employees = LoadEmployees();
         }
         public static FileDataListSingleton GetInstance()
         {
@@ -40,6 +43,7 @@ namespace TypographyShopFileImplement
             SaveOrders();
             SavePrinteds();
             SaveClients();
+            SaveEmployees();
         }
         private List<Component> LoadComponents()
         {
@@ -72,12 +76,13 @@ namespace TypographyShopFileImplement
                     {
                         Id = Convert.ToInt32(elem.Attribute("Id").Value),
                         PrintedId = Convert.ToInt32(elem.Element("PrintedId").Value),
-						ClientId = Convert.ToInt32(elem.Element("ClientId").Value),
+                        ClientId = Convert.ToInt32(elem.Element("ClientId").Value),
+                        EmployeeId = Convert.ToInt32(elem.Element("EmployeeId").Value),
                         Count = Convert.ToInt32(elem.Element("Count").Value),
                         Sum = Convert.ToDecimal(elem.Element("Sum").Value),
                         Status = (OrderStatus)Convert.ToInt32(elem.Element("Status").Value),
                         DateCreate = Convert.ToDateTime(elem.Element("DateCreate")?.Value),
-                        DateImplement = String.IsNullOrEmpty(elem.Element("DateImplement").Value) ? DateTime.MinValue : Convert.ToDateTime(elem.Element("DateImplement").Value)
+                        DateImplement = string.IsNullOrEmpty(elem.Element("DateImplement").Value) ? DateTime.MinValue : Convert.ToDateTime(elem.Element("DateImplement").Value)
                     });
                 }
             }
@@ -128,6 +133,26 @@ namespace TypographyShopFileImplement
             }
             return list;
         }
+        private List<Employee> LoadEmployees()
+        {
+            var list = new List<Employee>();
+            if (File.Exists(EmployeeFileName))
+            {
+                XDocument xDocument = XDocument.Load(EmployeeFileName);
+                var xElements = xDocument.Root.Elements("Employee").ToList();
+                foreach (var elem in xElements)
+                {
+                    list.Add(new Employee
+                    {
+                        Id = Convert.ToInt32(elem.Attribute("Id").Value),
+                        EmployeeFIO = elem.Element("EmployeeFIO").Value,
+                        WorkingTime = Convert.ToInt32(elem.Attribute("WorkingTime").Value),
+                        PauseTime = Convert.ToInt32(elem.Attribute("PauseTime").Value),
+                    });
+                }
+            }
+            return list;
+        }
         private void SaveComponents()
         {
             if (Components != null)
@@ -153,7 +178,8 @@ namespace TypographyShopFileImplement
                     xElement.Add(new XElement("Order",
                     new XAttribute("Id", order.Id),
                     new XElement("PrintedId", order.PrintedId),
-					new XElement("ClientId", order.ClientId),
+                    new XElement("ClientId", order.ClientId),
+                    new XElement("EmployeeId", order.EmployeeId),
                     new XElement("Count", order.Count),
                     new XElement("Sum", order.Sum),
                     new XElement("Status", (int)order.Status),
@@ -205,6 +231,24 @@ namespace TypographyShopFileImplement
                 }
                 XDocument xDocument = new XDocument(xElement);
                 xDocument.Save(ClientFileName);
+            }
+        }
+        private void SaveEmployees()
+        {
+            if (Employees != null)
+            {
+                var xElement = new XElement("Employees");
+                foreach (var employee in Employees)
+                {
+                    xElement.Add(new XElement("Employee",
+                    new XAttribute("Id", employee.Id),
+                    new XElement("EmployeeFIO", employee.EmployeeFIO),
+                    new XElement("WorkingTime", employee.WorkingTime),
+                    new XElement("PauseTime", employee.PauseTime)
+                    ));
+                }
+                XDocument xDocument = new XDocument(xElement);
+                xDocument.Save(EmployeeFileName);
             }
         }
     }

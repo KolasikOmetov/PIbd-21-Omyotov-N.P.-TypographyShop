@@ -10,6 +10,8 @@ namespace TypographyShopDatabaseImplement.Models
     public class Order
     {
         public int Id { get; set; }
+        public int? EmployeeId { get; set; }
+        public virtual Employee Employee { get; set; }
         public int ClientId { get; set; }
         public virtual Client Client { get; set; }
         public int PrintedId { get; set; }
