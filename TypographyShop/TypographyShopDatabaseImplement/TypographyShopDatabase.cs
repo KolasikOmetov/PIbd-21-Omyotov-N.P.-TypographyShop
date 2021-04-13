@@ -1,5 +1,5 @@
-﻿using TypographyShopDatabaseImplement.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using TypographyShopDatabaseImplement.Models;
 
 namespace TypographyShopDatabaseImplement
 {
@@ -17,5 +17,6 @@ namespace TypographyShopDatabaseImplement
         public virtual DbSet<Printed> Printeds { set; get; }
         public virtual DbSet<PrintedComponent> PrintedComponents { set; get; }
         public virtual DbSet<Order> Orders { set; get; }
+        public virtual DbSet<Client> Clients { set; get; }
     }
 }

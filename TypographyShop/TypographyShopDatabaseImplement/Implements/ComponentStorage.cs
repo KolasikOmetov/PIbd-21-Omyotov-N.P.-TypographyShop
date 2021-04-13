@@ -1,10 +1,10 @@
-﻿using TypographyShopBusinessLogic.BindingModels;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using TypographyShopBusinessLogic.BindingModels;
 using TypographyShopBusinessLogic.Interfaces;
 using TypographyShopBusinessLogic.ViewModels;
 using TypographyShopDatabaseImplement.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 namespace TypographyShopDatabaseImplement.Implements
 {
     public class ComponentStorage : IComponentStorage

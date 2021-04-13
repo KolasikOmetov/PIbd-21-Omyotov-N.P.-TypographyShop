@@ -1,11 +1,11 @@
-﻿using TypographyShopBusinessLogic.BindingModels;
-using TypographyShopBusinessLogic.Interfaces;
-using TypographyShopBusinessLogic.ViewModels;
-using TypographyShopDatabaseImplement.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TypographyShopBusinessLogic.BindingModels;
+using TypographyShopBusinessLogic.Interfaces;
+using TypographyShopBusinessLogic.ViewModels;
+using TypographyShopDatabaseImplement.Models;
 namespace TypographyShopDatabaseImplement.Implements
 {
     public class PrintedStorage : IPrintedStorage
@@ -97,7 +97,7 @@ namespace TypographyShopDatabaseImplement.Implements
                         context.SaveChanges();
                         transaction.Commit();
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         transaction.Rollback();
                         throw ex;

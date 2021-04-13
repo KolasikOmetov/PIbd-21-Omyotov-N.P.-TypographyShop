@@ -1,6 +1,5 @@
-﻿using TypographyShopBusinessLogic.ViewModels;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using TypographyShopBusinessLogic.ViewModels;
 
 namespace TypographyShopBusinessLogic.HelperModels
 {

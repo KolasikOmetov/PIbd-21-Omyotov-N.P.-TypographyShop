@@ -11,7 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TypographyShopListImplement
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypographyShopFileImplement", "TypographyShopFileImplement\TypographyShopFileImplement.csproj", "{34869197-5A22-49AC-B3CF-F90A3966C5B0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypographyShopDatabaseImplement", "TypographyShopDatabaseImplement\TypographyShopDatabaseImplement.csproj", "{3A4A4284-456E-47BC-98B4-C6A3718DCCA8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TypographyShopDatabaseImplement", "TypographyShopDatabaseImplement\TypographyShopDatabaseImplement.csproj", "{3A4A4284-456E-47BC-98B4-C6A3718DCCA8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypographyShopRestApi", "TypographyShopRestApi\TypographyShopRestApi.csproj", "{BA07774E-635D-444E-9BD2-D87A3B691FDD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TypographyShowClientApp", "TypographyShowClientApp\TypographyShowClientApp.csproj", "{4A2AF96B-D8E7-4566-A0F5-DF7CD9BC158C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +43,14 @@ Global
 		{3A4A4284-456E-47BC-98B4-C6A3718DCCA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A4A4284-456E-47BC-98B4-C6A3718DCCA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A4A4284-456E-47BC-98B4-C6A3718DCCA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA07774E-635D-444E-9BD2-D87A3B691FDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA07774E-635D-444E-9BD2-D87A3B691FDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA07774E-635D-444E-9BD2-D87A3B691FDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA07774E-635D-444E-9BD2-D87A3B691FDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A2AF96B-D8E7-4566-A0F5-DF7CD9BC158C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A2AF96B-D8E7-4566-A0F5-DF7CD9BC158C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A2AF96B-D8E7-4566-A0F5-DF7CD9BC158C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A2AF96B-D8E7-4566-A0F5-DF7CD9BC158C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

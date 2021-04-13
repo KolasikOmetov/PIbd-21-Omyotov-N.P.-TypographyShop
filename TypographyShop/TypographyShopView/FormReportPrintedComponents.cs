@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Windows.Forms;
-using Unity;
 using TypographyShopBusinessLogic.BindingModels;
 using TypographyShopBusinessLogic.BusinessLogics;
+using Unity;
 
 namespace TypographyShopView
 {
