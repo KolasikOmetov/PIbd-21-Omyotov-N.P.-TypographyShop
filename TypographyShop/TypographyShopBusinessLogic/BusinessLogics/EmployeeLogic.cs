@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using TypographyShopBusinessLogic.BindingModels;
+using TypographyShopBusinessLogic.Interfaces;
+using TypographyShopBusinessLogic.ViewModels;
 
 namespace TypographyShopBusinessLogic.BusinessLogics
 {
@@ -30,11 +32,11 @@ namespace TypographyShopBusinessLogic.BusinessLogics
         {
             var element = _clientStorage.GetElement(new EmployeeBindingModel
             {
-                Email = model.Email
+                EmployeeFIO = model.EmployeeFIO
             });
             if (element != null && element.Id != model.Id)
             {
-                throw new Exception("Уже есть клиент с таким логином");
+                throw new Exception("Уже есть работник с таким ФИО");
             }
             if (model.Id.HasValue)
             {
@@ -54,9 +56,9 @@ namespace TypographyShopBusinessLogic.BusinessLogics
             });
             if (element == null)
             {
-                throw new Exception("Клиент не найден");
+                throw new Exception("Работник не найден");
             }
             _clientStorage.Delete(model);
         }
-}
+    }
 }

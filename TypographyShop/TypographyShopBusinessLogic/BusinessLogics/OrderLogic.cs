@@ -77,15 +77,12 @@ namespace TypographyShopBusinessLogic.BusinessLogics
             {
                 throw new Exception("Не найден заказ");
             }
-            if (order.Status != OrderStatus.Выполняется)
-            {
-                throw new Exception("Заказ не в статусе \"Выполняется\"");
-            }
             _orderStorage.Update(new OrderBindingModel
             {
                 Id = order.Id,
                 PrintedId = order.PrintedId,
                 ClientId = order.ClientId,
+                EmployeeId = order.EmployeeId,
                 Count = order.Count,
                 Sum = order.Sum,
                 DateCreate = order.DateCreate,

@@ -24,7 +24,7 @@ namespace TypographyShopDatabaseImplement.Implements
                     EmployeeId = rec.EmployeeId,
                     PrintedName = rec.Printed.PrintedName,
                     ClientFIO = rec.Client.ClientFIO,
-                    EmployeeFIO = rec.EmployeeId.HasValue ? string.Empty : rec.Employee.EmployeeFIO,
+                    EmployeeFIO = rec.EmployeeId.HasValue ? rec.Employee.EmployeeFIO : string.Empty,
                     Count = rec.Count,
                     Sum = rec.Sum,
                     Status = rec.Status,
@@ -49,7 +49,7 @@ namespace TypographyShopDatabaseImplement.Implements
                     EmployeeId = rec.EmployeeId,
                     PrintedName = rec.Printed.PrintedName,
                     ClientFIO = rec.Client.ClientFIO,
-                    EmployeeFIO = rec.EmployeeId.HasValue ? string.Empty : rec.Employee.EmployeeFIO,
+                    EmployeeFIO = rec.EmployeeId.HasValue ? rec.Employee.EmployeeFIO : string.Empty,
                     Count = rec.Count,
                     Sum = rec.Sum,
                     Status = rec.Status,
@@ -72,6 +72,7 @@ namespace TypographyShopDatabaseImplement.Implements
                     Id = order.Id,
                     PrintedId = order.PrintedId,
                     ClientId = order.ClientId,
+                    EmployeeId = order.EmployeeId,
                     PrintedName = context.Printeds.Include(pr => pr.Orders).FirstOrDefault(rec => rec.Id == order.PrintedId)?.PrintedName,
                     ClientFIO = context.Clients.Include(pr => pr.Order).FirstOrDefault(rec => rec.Id == order.ClientId)?.ClientFIO,
                     EmployeeFIO = context.Employees.Include(pr => pr.Order).FirstOrDefault(rec => rec.Id == order.EmployeeId)?.EmployeeFIO,
@@ -168,7 +169,7 @@ namespace TypographyShopDatabaseImplement.Implements
                 }
                 else
                 {
-                    throw new Exception("Элемент не найден");
+                    throw new Exception("Изделие не найден");
                 }
                 Client client = context.Clients.FirstOrDefault(rec => rec.Id == model.ClientId);
                 if (client != null)
@@ -183,7 +184,7 @@ namespace TypographyShopDatabaseImplement.Implements
                 }
                 else
                 {
-                    throw new Exception("Элемент не найден");
+                    throw new Exception("Клиент не найден");
                 }
                 Employee employee = context.Employees.FirstOrDefault(rec => rec.Id == model.EmployeeId);
                 if (employee != null)
@@ -195,10 +196,6 @@ namespace TypographyShopDatabaseImplement.Implements
                     employee.Order.Add(order);
                     context.Employees.Update(employee);
                     context.SaveChanges();
-                }
-                else
-                {
-                    throw new Exception("Элемент не найден");
                 }
             }
             return order;
