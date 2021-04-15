@@ -200,21 +200,6 @@ namespace TypographyShopDatabaseImplement.Implements
                 {
                     throw new Exception("Элемент не найден");
                 }
-                Client client = context.Clients.FirstOrDefault(rec => rec.Id == model.ClientId);
-                if (client != null)
-                {
-                    if (client.Order == null)
-                    {
-                        client.Order = new List<Order>();
-                    }
-                    client.Order.Add(order);
-                    context.Clients.Update(client);
-                    context.SaveChanges();
-                }
-                else
-                {
-                    throw new Exception("Элемент не найден");
-                }
             }
             return order;
         }
