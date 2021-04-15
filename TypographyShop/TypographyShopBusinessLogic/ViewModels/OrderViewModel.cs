@@ -14,7 +14,7 @@ namespace TypographyShopBusinessLogic.ViewModels
         [DataMember]
         public int Id { get; set; }
         [DataMember]
-        public int EmployeeId { get; set; }
+        public int? EmployeeId { get; set; }
         [DataMember]
         public int ClientId { get; set; }
         [DataMember]
