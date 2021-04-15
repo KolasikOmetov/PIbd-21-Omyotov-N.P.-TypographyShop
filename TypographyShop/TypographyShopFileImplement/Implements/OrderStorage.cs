@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using TypographyShopBusinessLogic.BindingModels;
+using TypographyShopBusinessLogic.Enums;
 using TypographyShopBusinessLogic.Interfaces;
 using TypographyShopBusinessLogic.ViewModels;
 
@@ -29,7 +30,9 @@ namespace TypographyShopFileImplement.Implements
             return source.Orders
             .Where(rec => (!model.DateFrom.HasValue && !model.DateTo.HasValue && rec.DateCreate.Date == model.DateCreate.Date) ||
             (model.DateFrom.HasValue && model.DateTo.HasValue && rec.DateCreate.Date >= model.DateFrom.Value.Date && rec.DateCreate.Date <= model.DateTo.Value.Date) ||
-            (model.ClientId.HasValue && rec.ClientId == model.ClientId))
+            (model.ClientId.HasValue && rec.ClientId == model.ClientId) ||
+(model.FreeOrders.HasValue && model.FreeOrders.Value && rec.Status == OrderStatus.Принят) ||
+(model.EmployeeId.HasValue && rec.EmployeeId == model.EmployeeId && rec.Status == OrderStatus.Выполняется))
             .Select(CreateModel)
             .ToList();
         }
@@ -74,6 +77,7 @@ namespace TypographyShopFileImplement.Implements
         {
             order.ClientId = (int)model.ClientId;
             order.PrintedId = model.PrintedId;
+            order.EmployeeId = model.EmployeeId;
             order.Count = model.Count;
             order.Status = model.Status;
             order.Sum = model.Sum;
@@ -88,9 +92,11 @@ namespace TypographyShopFileImplement.Implements
             {
                 Id = order.Id,
                 ClientId = order.ClientId,
-                ClientFIO = source.Clients.FirstOrDefault(pr => pr.Id == order.ClientId)?.ClientFIO,
+                ClientFIO = source.Clients.FirstOrDefault(c => c.Id == order.ClientId)?.ClientFIO,
                 PrintedId = order.PrintedId,
                 PrintedName = source.Printeds.FirstOrDefault(p => p.Id == order.PrintedId)?.PrintedName,
+                EmployeeId = order.EmployeeId,
+                EmployeeFIO = source.Employees.FirstOrDefault(e => e.Id == order.EmployeeId)?.EmployeeFIO,
                 Count = order.Count,
                 Status = order.Status,
                 Sum = order.Sum,

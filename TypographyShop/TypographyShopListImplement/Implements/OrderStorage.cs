@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using TypographyShopBusinessLogic.BindingModels;
+using TypographyShopBusinessLogic.Enums;
 using TypographyShopBusinessLogic.Interfaces;
 using TypographyShopBusinessLogic.ViewModels;
 
@@ -33,7 +34,9 @@ namespace TypographyShopListImplement.Implements
             {
                 if ((!model.DateFrom.HasValue && !model.DateTo.HasValue && Order.DateCreate.Date == model.DateCreate.Date) ||
 (model.DateFrom.HasValue && model.DateTo.HasValue && Order.DateCreate.Date >= model.DateFrom.Value.Date && Order.DateCreate.Date <= model.DateTo.Value.Date) ||
-(model.ClientId.HasValue && Order.ClientId == model.ClientId))
+(model.ClientId.HasValue && Order.ClientId == model.ClientId) ||
+(model.FreeOrders.HasValue && model.FreeOrders.Value && Order.Status == OrderStatus.Принят) ||
+(model.EmployeeId.HasValue && Order.EmployeeId == model.EmployeeId && Order.Status == OrderStatus.Выполняется))
                 {
                     result.Add(CreateModel(Order));
                 }
@@ -99,6 +102,7 @@ namespace TypographyShopListImplement.Implements
         {
             order.PrintedId = model.PrintedId;
             order.ClientId = (int)model.ClientId;
+            order.EmployeeId = model.EmployeeId;
             order.Count = model.Count;
             order.Status = model.Status;
             order.Sum = model.Sum;
@@ -124,13 +128,23 @@ namespace TypographyShopListImplement.Implements
                     clientFIO = source.Clients[i].ClientFIO;
                 }
             }
+            string employeeFIO = "";
+            for (int i = 0; i < source.Employees.Count; ++i)
+            {
+                if (source.Employees[i].Id == order.EmployeeId)
+                {
+                    clientFIO = source.Employees[i].EmployeeFIO;
+                }
+            }
             return new OrderViewModel
             {
                 Id = order.Id,
-                ClientId = order.ClientId,
                 PrintedName = printedName,
                 PrintedId = order.PrintedId,
+                ClientId = order.ClientId,
                 ClientFIO = clientFIO,
+                EmployeeId = order.EmployeeId,
+                EmployeeFIO = employeeFIO,
                 Count = order.Count,
                 Status = order.Status,
                 Sum = order.Sum,
