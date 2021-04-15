@@ -2,17 +2,14 @@
 
 namespace TypographyShopDatabaseImplement.Models
 {
-    /// <summary>
-    /// Сколько компонентов, требуется при изготовлении изделия
-    /// </summary>
-    public class PrintedComponent
+    public class StoreComponent
     {
         public int Id { get; set; }
-        public int PrintedId { get; set; }
+        public int StoreId { get; set; }
         public int ComponentId { get; set; }
         [Required]
         public int Count { get; set; }
         public virtual Component Component { get; set; }
-        public virtual Printed Printed { get; set; }
+        public virtual Store Store { get; set; }
     }
 }

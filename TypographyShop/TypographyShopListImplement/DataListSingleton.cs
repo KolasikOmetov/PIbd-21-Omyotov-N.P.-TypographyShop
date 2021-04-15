@@ -8,11 +8,13 @@ namespace TypographyShopListImplement
 		public List<Component> Components { get; set; }
 		public List<Order> Orders { get; set; }
 		public List<Printed> Printeds { get; set; }
+		public List<Store> Stores { get; set; }
 		private DataListSingleton()
 		{
 			Components = new List<Component>();
 			Orders = new List<Order>();
 			Printeds = new List<Printed>();
+			Stores = new List<Store>();
 		}
 		public static DataListSingleton GetInstance()
 		{
