@@ -43,34 +43,38 @@
             // 
             // dateTimePickerFrom
             // 
-            this.dateTimePickerFrom.Location = new System.Drawing.Point(54, 11);
+            this.dateTimePickerFrom.Location = new System.Drawing.Point(81, 17);
+            this.dateTimePickerFrom.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.dateTimePickerFrom.Name = "dateTimePickerFrom";
-            this.dateTimePickerFrom.Size = new System.Drawing.Size(200, 20);
+            this.dateTimePickerFrom.Size = new System.Drawing.Size(298, 26);
             this.dateTimePickerFrom.TabIndex = 0;
             this.dateTimePickerFrom.Value = new System.DateTime(2021, 3, 14, 0, 0, 0, 0);
             // 
             // dateTimePickerTo
             // 
-            this.dateTimePickerTo.Location = new System.Drawing.Point(310, 12);
+            this.dateTimePickerTo.Location = new System.Drawing.Point(465, 18);
+            this.dateTimePickerTo.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.dateTimePickerTo.Name = "dateTimePickerTo";
-            this.dateTimePickerTo.Size = new System.Drawing.Size(200, 20);
+            this.dateTimePickerTo.Size = new System.Drawing.Size(298, 26);
             this.dateTimePickerTo.TabIndex = 1;
             this.dateTimePickerTo.Value = new System.DateTime(2021, 3, 14, 0, 0, 0, 0);
             // 
             // labelTo
             // 
             this.labelTo.AutoSize = true;
-            this.labelTo.Location = new System.Drawing.Point(271, 12);
+            this.labelTo.Location = new System.Drawing.Point(406, 18);
+            this.labelTo.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelTo.Name = "labelTo";
-            this.labelTo.Size = new System.Drawing.Size(21, 13);
+            this.labelTo.Size = new System.Drawing.Size(30, 20);
             this.labelTo.TabIndex = 4;
             this.labelTo.Text = "По";
             // 
             // buttonCreate
             // 
-            this.buttonCreate.Location = new System.Drawing.Point(531, 13);
+            this.buttonCreate.Location = new System.Drawing.Point(796, 20);
+            this.buttonCreate.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonCreate.Name = "buttonCreate";
-            this.buttonCreate.Size = new System.Drawing.Size(106, 23);
+            this.buttonCreate.Size = new System.Drawing.Size(159, 35);
             this.buttonCreate.TabIndex = 5;
             this.buttonCreate.Text = "Сформировать";
             this.buttonCreate.UseVisualStyleBackColor = true;
@@ -78,9 +82,10 @@
             // 
             // buttonPDF
             // 
-            this.buttonPDF.Location = new System.Drawing.Point(713, 13);
+            this.buttonPDF.Location = new System.Drawing.Point(1070, 20);
+            this.buttonPDF.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.buttonPDF.Name = "buttonPDF";
-            this.buttonPDF.Size = new System.Drawing.Size(75, 23);
+            this.buttonPDF.Size = new System.Drawing.Size(112, 35);
             this.buttonPDF.TabIndex = 6;
             this.buttonPDF.Text = "В PDF";
             this.buttonPDF.UseVisualStyleBackColor = true;
@@ -89,37 +94,40 @@
             // labelFrom
             // 
             this.labelFrom.AutoSize = true;
-            this.labelFrom.Location = new System.Drawing.Point(12, 12);
+            this.labelFrom.Location = new System.Drawing.Point(18, 18);
+            this.labelFrom.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelFrom.Name = "labelFrom";
-            this.labelFrom.Size = new System.Drawing.Size(14, 13);
+            this.labelFrom.Size = new System.Drawing.Size(20, 20);
             this.labelFrom.TabIndex = 3;
             this.labelFrom.Text = "С";
             // 
             // reportViewer
             // 
-            this.reportViewer.LocalReport.ReportEmbeddedResource = "TypographyShopView.Report.rdlc";
-            this.reportViewer.Location = new System.Drawing.Point(12, 52);
+            this.reportViewer.LocalReport.ReportEmbeddedResource = "TypographyShopView.OrderReportByDate.rdlc";
+            this.reportViewer.Location = new System.Drawing.Point(18, 80);
+            this.reportViewer.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.reportViewer.Name = "reportViewer";
             this.reportViewer.ServerReport.BearerToken = null;
-            this.reportViewer.Size = new System.Drawing.Size(776, 396);
+            this.reportViewer.Size = new System.Drawing.Size(1163, 608);
             this.reportViewer.TabIndex = 7;
             // 
             // panel
             // 
-            this.panel.Location = new System.Drawing.Point(1, 3);
+            this.panel.Location = new System.Drawing.Point(2, 5);
+            this.panel.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.panel.Name = "panel";
-            this.panel.Size = new System.Drawing.Size(796, 43);
+            this.panel.Size = new System.Drawing.Size(1194, 66);
             this.panel.TabIndex = 8;
             // 
             // ReportOrdersViewModelBindingSource
             // 
             this.ReportOrdersViewModelBindingSource.DataSource = typeof(TypographyShopBusinessLogic.ViewModels.ReportOrdersViewModel);
             // 
-            // FormReportOrders
+            // FormReportOrderByDate
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1200, 692);
             this.Controls.Add(this.reportViewer);
             this.Controls.Add(this.labelFrom);
             this.Controls.Add(this.buttonPDF);
@@ -128,7 +136,8 @@
             this.Controls.Add(this.dateTimePickerTo);
             this.Controls.Add(this.dateTimePickerFrom);
             this.Controls.Add(this.panel);
-            this.Name = "FormReportOrders";
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.Name = "FormReportOrderByDate";
             this.Text = "Заказы клиентов";
             ((System.ComponentModel.ISupportInitialize)(this.ReportOrdersViewModelBindingSource)).EndInit();
             this.ResumeLayout(false);

@@ -54,7 +54,7 @@ namespace TypographyShopBusinessLogic.BusinessLogics
         }
 
         [System.Obsolete]
-        public static void CreateDocOrdersForAllDates(PdfInfoOrderReportByDate info)
+        public static void CreateDocOrderReportByDate(PdfInfoOrderReportByDate info)
         {
             Document document = new Document();
             DefineStyles(document);
@@ -150,11 +150,6 @@ namespace TypographyShopBusinessLogic.BusinessLogics
             cellParameters.Cell.Borders.Bottom.Width = cellParameters.BorderWidth;
             cellParameters.Cell.Format.Alignment = cellParameters.ParagraphAlignment;
             cellParameters.Cell.VerticalAlignment = VerticalAlignment.Center;
-        }
-
-        internal static void CreateDocOrderReportByDate(PdfInfoOrderReportByDate pdfInfoOrderReportByDate)
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

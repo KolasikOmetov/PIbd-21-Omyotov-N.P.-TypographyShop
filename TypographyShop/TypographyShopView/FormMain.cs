@@ -169,5 +169,11 @@ namespace TypographyShopView
             var form = Container.Resolve<FormReportStoreComponents>();
             form.ShowDialog();
         }
+
+        private void списокЗаказовПоДнямToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = Container.Resolve<FormReportOrderByDate>();
+            form.ShowDialog();
+        }
     }
 }
