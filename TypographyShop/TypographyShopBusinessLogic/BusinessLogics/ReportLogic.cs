@@ -12,10 +12,12 @@ namespace TypographyShopBusinessLogic.BusinessLogics
     {
         private readonly IPrintedStorage _printedStorage;
         private readonly IOrderStorage _orderStorage;
-        public ReportLogic(IPrintedStorage printedStorage, IComponentStorage componentStorage, IOrderStorage orderStorage)
+        private readonly IStoreStorage _storeStorage;
+        public ReportLogic(IPrintedStorage printedStorage, IComponentStorage componentStorage, IOrderStorage orderStorage, IStoreStorage storeStorage)
         {
             _printedStorage = printedStorage;
             _orderStorage = orderStorage;
+            _storeStorage = storeStorage;
         }
         /// <summary>
         /// Получение списка компонент с указанием, в каких изделиях используются
@@ -42,6 +44,29 @@ namespace TypographyShopBusinessLogic.BusinessLogics
             }
             return list;
         }
+
+
+        public List<ReportStoreComponentViewModel> GetStoreComponent()
+        {
+            var stores = _storeStorage.GetFullList();
+            var list = new List<ReportStoreComponentViewModel>();
+            foreach (var store in stores)
+            {
+                var record = new ReportStoreComponentViewModel
+                {
+                    StoreName = store.StoreName,
+                    Components = new List<Tuple<string, int>>(),
+                    TotalCount = 0
+                };
+                foreach (var component in store.StoreComponents)
+                {
+                    record.Components.Add(new Tuple<string, int>(component.Value.Item1, component.Value.Item2));
+                    record.TotalCount += component.Value.Item2;
+                }
+                list.Add(record);
+            }
+            return list;
+        }
         /// <summary>
         /// Получение списка заказов за определенный период
         /// </summary>
@@ -60,6 +85,18 @@ namespace TypographyShopBusinessLogic.BusinessLogics
             })
             .ToList();
         }
+        public List<OrderReportByDateViewModel> GetOrderReportByDate()
+        {
+            return _orderStorage.GetFullList()
+                .GroupBy(order => order.DateCreate.ToShortDateString())
+                .Select(rec => new OrderReportByDateViewModel
+                {
+                    Date = Convert.ToDateTime(rec.Key),
+                    Count = rec.Count(),
+                    Sum = rec.Sum(order => order.Sum)
+                })
+                .ToList();
+        }
         /// <summary>
         /// Сохранение компонент в файл-Word
         /// </summary>
@@ -71,6 +108,16 @@ namespace TypographyShopBusinessLogic.BusinessLogics
                 FileName = model.FileName,
                 Title = "Список изделий",
                 Printeds = _printedStorage.GetFullList()
+            });
+        }
+
+        public void SaveStoresToWordFile(ReportBindingModel model)
+        {
+            SaveToWord.CreateStoresDoc(new StoreWordInfo
+            {
+                FileName = model.FileName,
+                Title = "Список складов",
+                Stores = _storeStorage.GetFullList()
             });
         }
         /// <summary>
@@ -86,7 +133,16 @@ namespace TypographyShopBusinessLogic.BusinessLogics
                 PrintedComponents = GetPrintedComponent()
             });
         }
-
+        
+        public void SaveStoreComponentToExcelFile(ReportBindingModel model)
+        {
+            SaveToExcel.CreateStoresDoc(new StoresExcelInfo
+            {
+                FileName = model.FileName,
+                Title = "Список складов",
+                StoreComponents = GetStoreComponent()
+            });
+        }
         /// <summary>
         /// Сохранение заказов в файл-Pdf
         /// </summary>
@@ -101,6 +157,15 @@ namespace TypographyShopBusinessLogic.BusinessLogics
                 DateFrom = model.DateFrom.Value,
                 DateTo = model.DateTo.Value,
                 Orders = GetOrders(model)
+            });
+        }
+        public void SaveOrderReportByDateToPdfFile(ReportBindingModel model)
+        {
+            SaveToPdf.CreateDocOrderReportByDate(new PdfInfoOrderReportByDate
+            {
+                FileName = model.FileName,
+                Title = "Список заказов",
+                Orders = GetOrderReportByDate()
             });
         }
     }
