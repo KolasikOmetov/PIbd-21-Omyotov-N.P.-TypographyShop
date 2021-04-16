@@ -161,7 +161,7 @@ namespace TypographyShopDatabaseImplement.Migrations
 
             modelBuilder.Entity("TypographyShopDatabaseImplement.Models.Order", b =>
                 {
-                    b.HasOne("TypographyShopDatabaseImplement.Models.Printed", null)
+                    b.HasOne("TypographyShopDatabaseImplement.Models.Printed", "Printed")
                         .WithMany("Orders")
                         .HasForeignKey("PrintedId")
                         .OnDelete(DeleteBehavior.Cascade)
