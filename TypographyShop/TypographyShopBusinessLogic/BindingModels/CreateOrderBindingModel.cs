@@ -1,16 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Runtime.Serialization;
 
 namespace TypographyShopBusinessLogic.BindingModels
 {
-	/// <summary>
-	/// Данные от клиента, для создания заказа
-	/// </summary>
-	public class CreateOrderBindingModel
-	{
-		public int PrintedId { get; set; }
-		public int Count { get; set; }
-		public decimal Sum { get; set; }
-	}
+    [DataContract]
+    public class CreateOrderBindingModel
+    {
+        [DataMember]
+        public int ClientId { get; set; }
+        [DataMember]
+        public int PrintedId { get; set; }
+        [DataMember]
+        public int Count { get; set; }
+        [DataMember]
+        public decimal Sum { get; set; }
+    }
 }

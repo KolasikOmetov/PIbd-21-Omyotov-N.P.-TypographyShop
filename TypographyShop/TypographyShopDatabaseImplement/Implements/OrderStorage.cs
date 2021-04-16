@@ -1,11 +1,11 @@
-﻿using TypographyShopBusinessLogic.BindingModels;
-using TypographyShopBusinessLogic.Interfaces;
-using TypographyShopBusinessLogic.ViewModels;
+﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TypographyShopBusinessLogic.BindingModels;
+using TypographyShopBusinessLogic.Interfaces;
+using TypographyShopBusinessLogic.ViewModels;
 using TypographyShopDatabaseImplement.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace TypographyShopDatabaseImplement.Implements
 {
@@ -16,11 +16,15 @@ namespace TypographyShopDatabaseImplement.Implements
             using (var context = new TypographyShopDatabase())
             {
                 return context.Orders
+                .Include(rec => rec.Printed)
+                .Include(rec => rec.Client)
                 .Select(rec => new OrderViewModel
                 {
                     Id = rec.Id,
                     PrintedId = rec.PrintedId,
-                    PrintedName = context.Printeds.Include(pr => pr.Orders).FirstOrDefault(pr => pr.Id == rec.PrintedId).PrintedName,
+                    ClientId = rec.ClientId,
+                    PrintedName = rec.Printed.PrintedName,
+                    ClientFIO = rec.Client.ClientFIO,
                     Count = rec.Count,
                     Sum = rec.Sum,
                     Status = rec.Status,
@@ -39,12 +43,18 @@ namespace TypographyShopDatabaseImplement.Implements
             using (var context = new TypographyShopDatabase())
             {
                 return context.Orders
-                .Where(rec => rec.PrintedId == model.PrintedId && rec.DateCreate >= model.DateFrom && rec.DateCreate <= model.DateTo)
+                .Include(rec => rec.Printed)
+                .Include(rec => rec.Client)
+                .Where(rec => (!model.DateFrom.HasValue && !model.DateTo.HasValue && rec.DateCreate.Date == model.DateCreate.Date) ||
+            (model.DateFrom.HasValue && model.DateTo.HasValue && rec.DateCreate.Date >= model.DateFrom.Value.Date && rec.DateCreate.Date <= model.DateTo.Value.Date) ||
+            (model.ClientId.HasValue && rec.ClientId == model.ClientId))
                 .Select(rec => new OrderViewModel
                 {
                     Id = rec.Id,
                     PrintedId = rec.PrintedId,
-                    PrintedName = context.Printeds.Include(pr => pr.Orders).FirstOrDefault(pr => pr.Id == rec.PrintedId).PrintedName,
+                    ClientId = rec.ClientId,
+                    PrintedName = rec.Printed.PrintedName,
+                    ClientFIO = rec.Client.ClientFIO,
                     Count = rec.Count,
                     Sum = rec.Sum,
                     Status = rec.Status,
@@ -69,7 +79,9 @@ namespace TypographyShopDatabaseImplement.Implements
                 {
                     Id = order.Id,
                     PrintedId = order.PrintedId,
+                    ClientId = order.ClientId,
                     PrintedName = context.Printeds.Include(pr => pr.Orders).FirstOrDefault(rec => rec.Id == order.PrintedId)?.PrintedName,
+                    ClientFIO = context.Clients.Include(pr => pr.Order).FirstOrDefault(rec => rec.Id == order.ClientId)?.ClientFIO,
                     Count = order.Count,
                     Sum = order.Sum,
                     Status = order.Status,
@@ -79,14 +91,19 @@ namespace TypographyShopDatabaseImplement.Implements
                 null;
             }
         }
-        
+
         public void Insert(OrderBindingModel model)
         {
             using (var context = new TypographyShopDatabase())
             {
+                if (model.ClientId.HasValue == false)
+                {
+                    throw new Exception("Клиент не указан");
+                }
                 Order order = new Order
                 {
                     PrintedId = model.PrintedId,
+                    ClientId = (int)model.ClientId,
                     Count = model.Count,
                     Sum = model.Sum,
                     Status = model.Status,
@@ -109,6 +126,7 @@ namespace TypographyShopDatabaseImplement.Implements
                     throw new Exception("Элемент не найден");
                 }
                 element.PrintedId = model.PrintedId;
+                element.ClientId = (int)model.ClientId;
                 element.Count = model.Count;
                 element.Sum = model.Sum;
                 element.Status = model.Status;
@@ -152,6 +170,21 @@ namespace TypographyShopDatabaseImplement.Implements
                     }
                     element.Orders.Add(order);
                     context.Printeds.Update(element);
+                    context.SaveChanges();
+                }
+                else
+                {
+                    throw new Exception("Элемент не найден");
+                }
+                Client client = context.Clients.FirstOrDefault(rec => rec.Id == model.ClientId);
+                if (client != null)
+                {
+                    if (client.Order == null)
+                    {
+                        client.Order = new List<Order>();
+                    }
+                    client.Order.Add(order);
+                    context.Clients.Update(client);
                     context.SaveChanges();
                 }
                 else

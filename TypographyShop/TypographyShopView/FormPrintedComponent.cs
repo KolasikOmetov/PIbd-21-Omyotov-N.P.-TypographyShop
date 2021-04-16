@@ -1,8 +1,8 @@
-﻿using TypographyShopBusinessLogic.BusinessLogics;
-using TypographyShopBusinessLogic.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using TypographyShopBusinessLogic.BusinessLogics;
+using TypographyShopBusinessLogic.ViewModels;
 using Unity;
 
 namespace TypographyShopView

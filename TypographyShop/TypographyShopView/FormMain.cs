@@ -1,10 +1,8 @@
-﻿using TypographyShopBusinessLogic.BindingModels;
-using TypographyShopBusinessLogic.BusinessLogics;
-using System;
+﻿using System;
 using System.Windows.Forms;
+using TypographyShopBusinessLogic.BindingModels;
+using TypographyShopBusinessLogic.BusinessLogics;
 using Unity;
-using System.Collections.Generic;
-using TypographyShopBusinessLogic.ViewModels;
 
 namespace TypographyShopView
 {
@@ -34,6 +32,7 @@ namespace TypographyShopView
                     dataGridView.DataSource = list;
                     dataGridView.Columns[0].Visible = false;
                     dataGridView.Columns[1].Visible = false;
+                    dataGridView.Columns[2].Visible = false;
                 }
                 else
                 {
@@ -135,6 +134,12 @@ namespace TypographyShopView
         private void списокЗаказовToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var form = Container.Resolve<FormReportOrders>();
+            form.ShowDialog();
+        }
+
+        private void клиентыToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = Container.Resolve<FormClients>();
             form.ShowDialog();
         }
     }

@@ -1,10 +1,10 @@
-﻿using TypographyShopBusinessLogic.BindingModels;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using TypographyShopBusinessLogic.BindingModels;
 using TypographyShopBusinessLogic.HelperModels;
 using TypographyShopBusinessLogic.Interfaces;
 using TypographyShopBusinessLogic.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace TypographyShopBusinessLogic.BusinessLogics
 {

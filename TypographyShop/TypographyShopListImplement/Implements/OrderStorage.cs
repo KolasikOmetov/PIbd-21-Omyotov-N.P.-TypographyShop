@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using TypographyShopBusinessLogic.BindingModels;
 using TypographyShopBusinessLogic.Interfaces;
 using TypographyShopBusinessLogic.ViewModels;
-using System.Linq;
 
 namespace TypographyShopListImplement.Implements
 {
@@ -25,14 +24,16 @@ namespace TypographyShopListImplement.Implements
         }
         public List<OrderViewModel> GetFilteredList(OrderBindingModel model)
         {
-            if (model == null || model.DateFrom == null || model.DateTo == null)
+            if (model == null)
             {
                 return null;
             }
             List<OrderViewModel> result = new List<OrderViewModel>();
             foreach (var Order in source.Orders)
             {
-                if (Order.DateCreate >= model.DateFrom && Order.DateCreate <= model.DateTo)
+                if ((!model.DateFrom.HasValue && !model.DateTo.HasValue && Order.DateCreate.Date == model.DateCreate.Date) ||
+(model.DateFrom.HasValue && model.DateTo.HasValue && Order.DateCreate.Date >= model.DateFrom.Value.Date && Order.DateCreate.Date <= model.DateTo.Value.Date) ||
+(model.ClientId.HasValue && Order.ClientId == model.ClientId))
                 {
                     result.Add(CreateModel(Order));
                 }
@@ -97,6 +98,7 @@ namespace TypographyShopListImplement.Implements
         private Order CreateModel(OrderBindingModel model, Order order)
         {
             order.PrintedId = model.PrintedId;
+            order.ClientId = (int)model.ClientId;
             order.Count = model.Count;
             order.Status = model.Status;
             order.Sum = model.Sum;
@@ -106,11 +108,29 @@ namespace TypographyShopListImplement.Implements
         }
         private OrderViewModel CreateModel(Order order)
         {
+            string printedName = "";
+            for (int i = 0; i < source.Printeds.Count; ++i)
+            {
+                if (source.Printeds[i].Id == order.PrintedId)
+                {
+                    printedName = source.Printeds[i].PrintedName;
+                }
+            }
+            string clientFIO = "";
+            for (int i = 0; i < source.Clients.Count; ++i)
+            {
+                if (source.Clients[i].Id == order.ClientId)
+                {
+                    clientFIO = source.Clients[i].ClientFIO;
+                }
+            }
             return new OrderViewModel
             {
                 Id = order.Id,
+                ClientId = order.ClientId,
+                PrintedName = printedName,
                 PrintedId = order.PrintedId,
-                PrintedName=source.Printeds.FirstOrDefault(p=>p.Id==order.PrintedId)?.PrintedName,
+                ClientFIO = clientFIO,
                 Count = order.Count,
                 Status = order.Status,
                 Sum = order.Sum,
