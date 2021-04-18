@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace TypographyShopFileImplement.Models
 {
 	/// <summary>
-	/// Изделие, изготавливаемое в магазине
+	/// Склад с компонентами
 	/// </summary>
 	public class Store
 	{
