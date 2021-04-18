@@ -175,6 +175,10 @@
       <Project>{b85184e4-71c7-42c5-8ab4-314a1abea338}</Project>
       <Name>TypographyShopBusinessLogic</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TypographyShopFileImplement\TypographyShopFileImplement.csproj">
+      <Project>{34869197-5a22-49ac-b3cf-f90a3966c5b0}</Project>
+      <Name>TypographyShopFileImplement</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TypographyShopListImplement\TypographyShopListImplement.csproj">
       <Project>{C4357D9A-C55D-4E6C-804E-153B43399EDC}</Project>
       <Name>TypographyShopListImplement</Name>

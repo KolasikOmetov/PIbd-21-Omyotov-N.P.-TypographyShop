@@ -94,28 +94,28 @@ namespace TypographyShopListImplement.Implements
             }
             throw new Exception("Элемент не найден");
         }
-        private Order CreateModel(OrderBindingModel model, Order Order)
+        private Order CreateModel(OrderBindingModel model, Order order)
         {
-            Order.PrintedId = model.PrintedId;
-            Order.Count = model.Count;
-            Order.Status = model.Status;
-            Order.Sum = model.Sum;
-            Order.DateCreate = model.DateCreate;
-            Order.DateImplement = model.DateImplement;
-            return Order;
+            order.PrintedId = model.PrintedId;
+            order.Count = model.Count;
+            order.Status = model.Status;
+            order.Sum = model.Sum;
+            order.DateCreate = model.DateCreate;
+            order.DateImplement = model.DateImplement;
+            return order;
         }
-        private OrderViewModel CreateModel(Order Order)
+        private OrderViewModel CreateModel(Order order)
         {
             return new OrderViewModel
             {
-                Id = Order.Id,
-                PrintedId = Order.PrintedId,
-                PrintedName=source.Printeds.FirstOrDefault(p=>p.Id==Order.PrintedId)?.PrintedName,
-                Count = Order.Count,
-                Status = Order.Status,
-                Sum = Order.Sum,
-                DateCreate = Order.DateCreate,
-                DateImplement = Order.DateImplement,
+                Id = order.Id,
+                PrintedId = order.PrintedId,
+                PrintedName=source.Printeds.FirstOrDefault(p=>p.Id==order.PrintedId)?.PrintedName,
+                Count = order.Count,
+                Status = order.Status,
+                Sum = order.Sum,
+                DateCreate = order.DateCreate,
+                DateImplement = order.DateImplement,
             };
         }
     }
