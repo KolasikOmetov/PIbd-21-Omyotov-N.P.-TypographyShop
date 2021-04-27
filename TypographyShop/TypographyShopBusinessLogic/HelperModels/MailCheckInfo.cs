@@ -1,0 +1,11 @@
+﻿using TypographyShopBusinessLogic.Interfaces;
+
+namespace TypographyShopBusinessLogic.HelperModels
+{
+    public class MailCheckInfo
+    {
+        public string PopHost { get; set; }
+        public int PopPort { get; set; }
+        public IMessageInfoStorage Storage { get; set; }
+    }
+}

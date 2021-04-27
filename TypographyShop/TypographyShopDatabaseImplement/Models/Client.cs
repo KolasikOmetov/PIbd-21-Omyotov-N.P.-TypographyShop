@@ -19,5 +19,8 @@ namespace TypographyShopDatabaseImplement.Models
 
         [ForeignKey("ClientId")]
         public List<Order> Order { get; set; }
+
+        [ForeignKey("ClientId")]
+        public List<MessageInfo> Messages { get; set; }
     }
 }
