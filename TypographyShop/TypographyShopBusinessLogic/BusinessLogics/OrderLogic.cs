@@ -10,6 +10,7 @@ namespace TypographyShopBusinessLogic.BusinessLogics
     public class OrderLogic
     {
         private readonly IOrderStorage _orderStorage;
+        private readonly object locker = new object();
         public OrderLogic(IOrderStorage orderStorage)
         {
             _orderStorage = orderStorage;
@@ -40,26 +41,34 @@ namespace TypographyShopBusinessLogic.BusinessLogics
         }
         public void TakeOrderInWork(ChangeStatusBindingModel model)
         {
-            var order = _orderStorage.GetElement(new OrderBindingModel { Id = model.OrderId });
-            if (order == null)
+            lock (locker)
             {
-                throw new Exception("Не найден заказ");
+                var order = _orderStorage.GetElement(new OrderBindingModel { Id = model.OrderId });
+                if (order == null)
+                {
+                    throw new Exception("Не найден заказ");
+                }
+                if (order.Status != OrderStatus.Принят)
+                {
+                    throw new Exception("Заказ не в статусе \"Принят\"");
+                }
+                if (order.EmployeeId.HasValue)
+                {
+                    throw new Exception("У заказа уже есть исполнитель");
+                }
+                _orderStorage.Update(new OrderBindingModel
+                {
+                    Id = order.Id,
+                    ClientId = order.ClientId,
+                    EmployeeId = model.EmployeeId,
+                    PrintedId = order.PrintedId,
+                    Count = order.Count,
+                    Sum = order.Sum,
+                    DateCreate = order.DateCreate,
+                    DateImplement = DateTime.Now,
+                    Status = OrderStatus.Выполняется
+                });
             }
-            if (order.Status != OrderStatus.Принят)
-            {
-                throw new Exception("Заказ не в статусе \"Принят\"");
-            }
-            _orderStorage.Update(new OrderBindingModel
-            {
-                Id = order.Id,
-                PrintedId = order.PrintedId,
-                ClientId = order.ClientId,
-                Count = order.Count,
-                Sum = order.Sum,
-                DateCreate = order.DateCreate,
-                DateImplement = DateTime.Now,
-                Status = OrderStatus.Выполняется
-            });
         }
         public void FinishOrder(ChangeStatusBindingModel model)
         {
@@ -68,15 +77,12 @@ namespace TypographyShopBusinessLogic.BusinessLogics
             {
                 throw new Exception("Не найден заказ");
             }
-            if (order.Status != OrderStatus.Выполняется)
-            {
-                throw new Exception("Заказ не в статусе \"Выполняется\"");
-            }
             _orderStorage.Update(new OrderBindingModel
             {
                 Id = order.Id,
                 PrintedId = order.PrintedId,
                 ClientId = order.ClientId,
+                EmployeeId = order.EmployeeId,
                 Count = order.Count,
                 Sum = order.Sum,
                 DateCreate = order.DateCreate,
