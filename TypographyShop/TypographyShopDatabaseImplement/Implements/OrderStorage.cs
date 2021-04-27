@@ -75,7 +75,7 @@ namespace TypographyShopDatabaseImplement.Implements
                     EmployeeId = order.EmployeeId,
                     PrintedName = context.Printeds.Include(pr => pr.Orders).FirstOrDefault(rec => rec.Id == order.PrintedId)?.PrintedName,
                     ClientFIO = context.Clients.Include(pr => pr.Order).FirstOrDefault(rec => rec.Id == order.ClientId)?.ClientFIO,
-                    EmployeeFIO = context.Employees.Include(pr => pr.Order).FirstOrDefault(rec => rec.Id == order.EmployeeId)?.EmployeeFIO,
+                    EmployeeFIO = order.Employee?.EmployeeFIO,
                     Count = order.Count,
                     Sum = order.Sum,
                     Status = order.Status,
