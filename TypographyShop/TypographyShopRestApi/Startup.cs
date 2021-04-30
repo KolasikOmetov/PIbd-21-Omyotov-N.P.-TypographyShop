@@ -34,8 +34,8 @@ namespace TypographyShopRestApi
             {
                 SmtpClientHost = "smtp.gmail.com",
                 SmtpClientPort = 587,
-                MailLogin = "nicolaymusic12@gmail.com",
-                MailPassword = "gigabite345",
+                MailLogin = "lab7using@gmail.com",
+                MailPassword = "321ewq#@!",
             });
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

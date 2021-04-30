@@ -106,7 +106,7 @@ namespace TypographyShopBusinessLogic.BusinessLogics
                 {
                     try
                     {
-                        client.Connect(info.PopHost, info.PopPort, SecureSocketOptions.StartTlsWhenAvailable);
+                        client.Connect(info.PopHost, info.PopPort, SecureSocketOptions.SslOnConnect);
                         client.Authenticate(mailLogin, mailPassword);
                         for (int i = 0; i < client.Count; i++)
                         {
@@ -115,6 +115,7 @@ namespace TypographyShopBusinessLogic.BusinessLogics
                             {
                                 info.Storage.Insert(new MessageInfoBindingModel
                                 {
+                                    ClientId = info.ClientStorage.GetElement(new ClientBindingModel{ Email = mail.Address })?.Id,
                                     DateDelivery = message.Date.DateTime,
                                     MessageId = message.MessageId,
                                     FromMailAddress = mail.Address,
