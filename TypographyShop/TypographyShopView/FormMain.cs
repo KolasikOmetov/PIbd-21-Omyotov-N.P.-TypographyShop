@@ -1,10 +1,8 @@
-﻿using TypographyShopBusinessLogic.BindingModels;
-using TypographyShopBusinessLogic.BusinessLogics;
-using System;
+﻿using System;
 using System.Windows.Forms;
+using TypographyShopBusinessLogic.BindingModels;
+using TypographyShopBusinessLogic.BusinessLogics;
 using Unity;
-using System.Collections.Generic;
-using TypographyShopBusinessLogic.ViewModels;
 
 namespace TypographyShopView
 {
@@ -13,10 +11,12 @@ namespace TypographyShopView
         [Dependency]
         public new IUnityContainer Container { get; set; }
         private readonly OrderLogic _orderLogic;
-        public FormMain(OrderLogic orderLogic)
+        private readonly ReportLogic _report;
+        public FormMain(OrderLogic orderLogic, ReportLogic report)
         {
             InitializeComponent();
             this._orderLogic = orderLogic;
+            this._report = report;
         }
         private void FormMain_Load(object sender, EventArgs e)
         {
@@ -112,6 +112,30 @@ namespace TypographyShopView
             LoadData();
         }
 
+        private void списокИзделийToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var dialog = new SaveFileDialog { Filter = "docx|*.docx" })
+            {
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    _report.SaveComponentsToWordFile(new ReportBindingModel { FileName = dialog.FileName });
+                    MessageBox.Show("Выполнено", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+        }
+
+        private void компонентыПоИзделиямToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = Container.Resolve<FormReportPrintedComponents>();
+            form.ShowDialog();
+        }
+
+        private void списокЗаказовToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = Container.Resolve<FormReportOrders>();
+            form.ShowDialog();
+        }
+        
         private void СкладыToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var form = Container.Resolve<FormStores>();
@@ -121,6 +145,34 @@ namespace TypographyShopView
         private void ПополнениеСкладаToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var form = Container.Resolve<FormFillStore>();
+            form.ShowDialog();
+        }
+
+        private void списокСкладовToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var dialog = new SaveFileDialog { Filter = "docx|*.docx" })
+            {
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    _report.SaveStoresToWordFile(new ReportBindingModel
+                    {
+                        FileName = dialog.FileName
+                    });
+
+                    MessageBox.Show("Сохранение прошло успешно", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+        }
+
+        private void компонентыПоСкладамToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = Container.Resolve<FormReportStoreComponents>();
+            form.ShowDialog();
+        }
+
+        private void списокЗаказовПоДнямToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var form = Container.Resolve<FormReportOrderByDate>();
             form.ShowDialog();
         }
     }

@@ -31,6 +31,7 @@ namespace TypographyShopView
 			currentContainer.RegisterType<ComponentLogic>(new HierarchicalLifetimeManager());
 			currentContainer.RegisterType<OrderLogic>(new HierarchicalLifetimeManager());
 			currentContainer.RegisterType<PrintedLogic>(new HierarchicalLifetimeManager());
+			currentContainer.RegisterType<ReportLogic>(new HierarchicalLifetimeManager());
 			currentContainer.RegisterType<StoreLogic>(new HierarchicalLifetimeManager());
 			return currentContainer;
 		}
