@@ -18,21 +18,21 @@ namespace TypographyShopBusinessLogic.BindingModels
         public int? ClientId { get; set; }
         [DataMember]
         public int PrintedId { get; set; }
-		[DataMember]
+        [DataMember]
         public int Count { get; set; }
-		[DataMember]
+        [DataMember]
         public decimal Sum { get; set; }
-		[DataMember]
+        [DataMember]
         public OrderStatus Status { get; set; }
-		[DataMember]
+        [DataMember]
         public DateTime DateCreate { get; set; }
-		[DataMember]
+        [DataMember]
         public DateTime? DateImplement { get; set; }
-		[DataMember]
+        [DataMember]
         public DateTime? DateFrom { get; set; }
-		[DataMember]
+        [DataMember]
         public DateTime? DateTo { get; set; }
-		[DataMember]
+        [DataMember]
         public bool? FreeOrders { get; set; }
     }
 }

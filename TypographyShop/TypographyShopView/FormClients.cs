@@ -25,18 +25,7 @@ namespace TypographyShopView
         {
             try
             {
-                var list = _clientLogic.Read(null);
-                if (list != null)
-                {
-                    dataGridView.DataSource = list;
-                    dataGridView.Columns[0].Visible = false;
-                    dataGridView.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                    dataGridView.Columns[3].Visible = false;
-                }
-                else
-                {
-                    throw new Exception("Не удалось загрузить список клиентов");
-                }
+                Program.ConfigGrid(_clientLogic.Read(null), dataGridView);
             }
             catch (Exception ex)
             {
