@@ -5,6 +5,7 @@ using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 using System.Linq;
 using TypographyShopBusinessLogic.HelperModels;
+using TypographyShopBusinessLogic.ViewModels;
 
 namespace TypographyShopBusinessLogic.BusinessLogics
 {
