@@ -69,10 +69,12 @@
     <Compile Include="Implements\OrderStorage.cs" />
     <Compile Include="Implements\PrintedStorage.cs" />
     <Compile Include="Models\Client.cs" />
+    <Compile Include="Implements\StoreStorage.cs" />
     <Compile Include="Models\Component.cs" />
     <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\Order.cs" />
     <Compile Include="Models\Printed.cs" />
+    <Compile Include="Models\Store.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlServerTypes\Loader.cs" />
   </ItemGroup>

@@ -11,9 +11,11 @@ namespace TypographyShopBusinessLogic.BusinessLogics
     {
         private readonly IOrderStorage _orderStorage;
         private readonly object locker = new object();
-        public OrderLogic(IOrderStorage orderStorage)
+		private readonly IStoreStorage _storeStorage;
+		public OrderLogic(IOrderStorage orderStorage, IStoreStorage storeStorage)
         {
             _orderStorage = orderStorage;
+			_storeStorage = storeStorage;
         }
         public List<OrderViewModel> Read(OrderBindingModel model)
         {
@@ -69,6 +71,22 @@ namespace TypographyShopBusinessLogic.BusinessLogics
                     Status = OrderStatus.Выполняется
                 });
             }
+			if (!_storeStorage.CheckPrintedsByComponents(order.PrintedId, order.Count))
+			{
+				throw new Exception("Недостаточно компонентов на складах");
+			}
+			_storeStorage.Extract(order.PrintedId, order.Count);
+            _orderStorage.Update(new OrderBindingModel
+            {
+                Id = order.Id,
+                PrintedId = order.PrintedId,
+                ClientId = order.ClientId,
+                Count = order.Count,
+                Sum = order.Sum,
+                DateCreate = order.DateCreate,
+                DateImplement = DateTime.Now,
+                Status = OrderStatus.Выполняется
+            });
         }
         public void FinishOrder(ChangeStatusBindingModel model)
         {
