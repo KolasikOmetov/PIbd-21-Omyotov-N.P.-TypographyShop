@@ -11,11 +11,11 @@ namespace TypographyShopBusinessLogic.BusinessLogics
     {
         private readonly IOrderStorage _orderStorage;
         private readonly object locker = new object();
-		private readonly IStoreStorage _storeStorage;
-		public OrderLogic(IOrderStorage orderStorage, IStoreStorage storeStorage)
+        private readonly IStoreStorage _storeStorage;
+        public OrderLogic(IOrderStorage orderStorage, IStoreStorage storeStorage)
         {
             _orderStorage = orderStorage;
-			_storeStorage = storeStorage;
+            _storeStorage = storeStorage;
         }
         public List<OrderViewModel> Read(OrderBindingModel model)
         {
@@ -50,43 +50,35 @@ namespace TypographyShopBusinessLogic.BusinessLogics
                 {
                     throw new Exception("Не найден заказ");
                 }
-                if (order.Status != OrderStatus.Принят)
+                if (order.Status != OrderStatus.Принят && order.Status != OrderStatus.Требуются_материалы)
                 {
-                    throw new Exception("Заказ не в статусе \"Принят\"");
+                    throw new Exception("Заказ не принят в работу");
                 }
                 if (order.EmployeeId.HasValue)
                 {
                     throw new Exception("У заказа уже есть исполнитель");
                 }
-                _orderStorage.Update(new OrderBindingModel
+                var updatedOrderBindingModel = new OrderBindingModel
                 {
                     Id = order.Id,
                     ClientId = order.ClientId,
-                    EmployeeId = model.EmployeeId,
                     PrintedId = order.PrintedId,
                     Count = order.Count,
                     Sum = order.Sum,
                     DateCreate = order.DateCreate,
-                    DateImplement = DateTime.Now,
-                    Status = OrderStatus.Выполняется
-                });
+                };
+                if (!_storeStorage.CheckPrintedsByComponents(order.PrintedId, order.Count))
+                {
+                    updatedOrderBindingModel.Status = OrderStatus.Требуются_материалы;
+                }
+                else
+                {
+                    updatedOrderBindingModel.DateImplement = DateTime.Now;
+                    updatedOrderBindingModel.Status = OrderStatus.Выполняется;
+                    updatedOrderBindingModel.EmployeeId = model.EmployeeId;
+                }
+                _orderStorage.Update(updatedOrderBindingModel);
             }
-			if (!_storeStorage.CheckPrintedsByComponents(order.PrintedId, order.Count))
-			{
-				throw new Exception("Недостаточно компонентов на складах");
-			}
-			_storeStorage.Extract(order.PrintedId, order.Count);
-            _orderStorage.Update(new OrderBindingModel
-            {
-                Id = order.Id,
-                PrintedId = order.PrintedId,
-                ClientId = order.ClientId,
-                Count = order.Count,
-                Sum = order.Sum,
-                DateCreate = order.DateCreate,
-                DateImplement = DateTime.Now,
-                Status = OrderStatus.Выполняется
-            });
         }
         public void FinishOrder(ChangeStatusBindingModel model)
         {
@@ -99,8 +91,8 @@ namespace TypographyShopBusinessLogic.BusinessLogics
             {
                 Id = order.Id,
                 PrintedId = order.PrintedId,
-                ClientId = order.ClientId,
                 EmployeeId = order.EmployeeId,
+                ClientId = order.ClientId,
                 Count = order.Count,
                 Sum = order.Sum,
                 DateCreate = order.DateCreate,
