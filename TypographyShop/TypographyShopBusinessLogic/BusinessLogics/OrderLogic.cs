@@ -43,6 +43,7 @@ namespace TypographyShopBusinessLogic.BusinessLogics
         }
         public void TakeOrderInWork(ChangeStatusBindingModel model)
         {
+            
             lock (locker)
             {
                 var order = _orderStorage.GetElement(new OrderBindingModel { Id = model.OrderId });
@@ -58,7 +59,7 @@ namespace TypographyShopBusinessLogic.BusinessLogics
                 {
                     throw new Exception("У заказа уже есть исполнитель");
                 }
-                var updatedOrderBindingModel = new OrderBindingModel
+                OrderBindingModel updatedOrderBindingModel = new OrderBindingModel
                 {
                     Id = order.Id,
                     ClientId = order.ClientId,
@@ -87,18 +88,21 @@ namespace TypographyShopBusinessLogic.BusinessLogics
             {
                 throw new Exception("Не найден заказ");
             }
-            _orderStorage.Update(new OrderBindingModel
+            if (order.Status == OrderStatus.Выполняется)
             {
-                Id = order.Id,
-                PrintedId = order.PrintedId,
-                EmployeeId = order.EmployeeId,
-                ClientId = order.ClientId,
-                Count = order.Count,
-                Sum = order.Sum,
-                DateCreate = order.DateCreate,
-                DateImplement = order.DateImplement,
-                Status = OrderStatus.Готов
-            });
+                _orderStorage.Update(new OrderBindingModel
+                {
+                    Id = order.Id,
+                    PrintedId = order.PrintedId,
+                    EmployeeId = order.EmployeeId,
+                    ClientId = order.ClientId,
+                    Count = order.Count,
+                    Sum = order.Sum,
+                    DateCreate = order.DateCreate,
+                    DateImplement = order.DateImplement,
+                    Status = OrderStatus.Готов
+                });
+            }
         }
         public void PayOrder(ChangeStatusBindingModel model)
         {

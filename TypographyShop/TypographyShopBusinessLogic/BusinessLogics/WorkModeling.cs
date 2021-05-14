@@ -91,6 +91,10 @@ namespace TypographyShopBusinessLogic.BusinessLogics
                     try
                     {
                         _orderLogic.TakeOrderInWork(new ChangeStatusBindingModel { OrderId = order.Id, EmployeeId = employee.Id });
+                        if (order.Status == OrderStatus.Требуются_материалы)
+                        {
+                            continue;
+                        }
                         // делаем работу
                         Thread.Sleep(employee.WorkingTime * rnd.Next(1, 5) * order.Count);
                         _orderLogic.FinishOrder(new ChangeStatusBindingModel { OrderId = order.Id });
