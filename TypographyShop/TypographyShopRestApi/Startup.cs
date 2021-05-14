@@ -22,9 +22,13 @@ namespace TypographyShopRestApi
             services.AddTransient<IClientStorage, ClientStorage>();
             services.AddTransient<IOrderStorage, OrderStorage>();
             services.AddTransient<IPrintedStorage, PrintedStorage>();
+            services.AddTransient<IComponentStorage, ComponentStorage>();
+            services.AddTransient<IStoreStorage, StoreStorage>();
             services.AddTransient<OrderLogic>();
             services.AddTransient<ClientLogic>();
             services.AddTransient<PrintedLogic>();
+            services.AddTransient<ComponentLogic>();
+            services.AddTransient<StoreLogic>();
             services.AddControllers().AddNewtonsoftJson();
         }
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
