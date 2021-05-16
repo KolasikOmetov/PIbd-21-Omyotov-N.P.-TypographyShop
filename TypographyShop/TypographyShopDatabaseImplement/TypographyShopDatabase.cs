@@ -20,5 +20,6 @@ namespace TypographyShopDatabaseImplement
         public virtual DbSet<StoreComponent> StoreComponents { set; get; }
         public virtual DbSet<Order> Orders { set; get; }
         public virtual DbSet<Client> Clients { set; get; }
+        public virtual DbSet<Employee> Employees { set; get; }
     }
 }

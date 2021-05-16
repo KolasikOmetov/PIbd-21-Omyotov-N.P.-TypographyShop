@@ -9,6 +9,7 @@ namespace TypographyShopListImplement
         public List<Order> Orders { get; set; }
         public List<Printed> Printeds { get; set; }
         public List<Client> Clients { get; set; }
+        public List<Employee> Employees { get; set; }
         public List<Store> Stores { get; set; }
         private DataListSingleton()
         {
@@ -16,6 +17,7 @@ namespace TypographyShopListImplement
             Orders = new List<Order>();
             Printeds = new List<Printed>();
             Clients = new List<Client>();
+            Employees = new List<Employee>();
             Stores = new List<Store>();
         }
         public static DataListSingleton GetInstance()

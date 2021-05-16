@@ -187,7 +187,15 @@ namespace TypographyShopDatabaseImplement.Implements
 
         public bool CheckPrintedsByComponents(int PrintedId, int Count)
         {
-            return true;
+            try
+            {
+                Extract(PrintedId, Count);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
         public void Extract(int PrintedId, int Count)
         {

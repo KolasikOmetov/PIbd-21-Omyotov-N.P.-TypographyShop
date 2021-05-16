@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TypographyShopDatabaseImplement;
 
 namespace TypographyShopDatabaseImplement.Migrations
 {
     [DbContext(typeof(TypographyShopDatabase))]
-    partial class TypographyShopDatabaseModelSnapshot : ModelSnapshot
+    [Migration("20210413181840_Employees")]
+    partial class Employees
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -166,54 +168,6 @@ namespace TypographyShopDatabaseImplement.Migrations
                     b.ToTable("PrintedComponents");
                 });
 
-            modelBuilder.Entity("TypographyShopDatabaseImplement.Models.Store", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("DateCreation")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ResponsibleName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("StoreName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Stores");
-                });
-
-            modelBuilder.Entity("TypographyShopDatabaseImplement.Models.StoreComponent", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("ComponentId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Count")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StoreId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ComponentId");
-
-                    b.HasIndex("StoreId");
-
-                    b.ToTable("StoreComponents");
-                });
-
             modelBuilder.Entity("TypographyShopDatabaseImplement.Models.Order", b =>
                 {
                     b.HasOne("TypographyShopDatabaseImplement.Models.Client", "Client")
@@ -244,21 +198,6 @@ namespace TypographyShopDatabaseImplement.Migrations
                     b.HasOne("TypographyShopDatabaseImplement.Models.Printed", "Printed")
                         .WithMany("PrintedComponents")
                         .HasForeignKey("PrintedId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("TypographyShopDatabaseImplement.Models.StoreComponent", b =>
-                {
-                    b.HasOne("TypographyShopDatabaseImplement.Models.Component", "Component")
-                        .WithMany("StoreComponents")
-                        .HasForeignKey("ComponentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("TypographyShopDatabaseImplement.Models.Store", "Store")
-                        .WithMany("StoreComponents")
-                        .HasForeignKey("StoreId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
