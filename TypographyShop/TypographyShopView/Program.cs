@@ -65,5 +65,7 @@ namespace TypographyShopView
         {
             MailLogic.MailCheck((MailCheckInfo)obj);
         }
+
+        public static int pageSize = 4;
     }
 }
