@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Windows.Forms;
 using TypographyShopBusinessLogic.BindingModels;
 using TypographyShopBusinessLogic.BusinessLogics;
@@ -79,7 +80,8 @@ namespace TypographyShopView
             {
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
-                    _report.SaveComponentsToWordFile(new ReportBindingModel { FileName = dialog.FileName });
+                    MethodInfo saveComponentsToWordFile = _report.GetType().GetMethod("SaveComponentsToWordFile");
+                    saveComponentsToWordFile.Invoke(_report, new object[] { new ReportBindingModel { FileName = dialog.FileName } });
                     MessageBox.Show("Выполнено", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
@@ -134,10 +136,8 @@ namespace TypographyShopView
             {
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
-                    _report.SaveStoresToWordFile(new ReportBindingModel
-                    {
-                        FileName = dialog.FileName
-                    });
+                    MethodInfo saveStoresToWordFile = _report.GetType().GetMethod("SaveStoresToWordFile");
+                    saveStoresToWordFile.Invoke(_report, new object[] { new ReportBindingModel { FileName = dialog.FileName } });
 
                     MessageBox.Show("Сохранение прошло успешно", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }

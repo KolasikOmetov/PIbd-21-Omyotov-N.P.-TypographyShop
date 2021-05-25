@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
 using System.Windows.Forms;
 using TypographyShopBusinessLogic.BindingModels;
 using TypographyShopBusinessLogic.BusinessLogics;
+using TypographyShopBusinessLogic.ViewModels;
 using Unity;
 
 namespace TypographyShopView
@@ -21,7 +24,8 @@ namespace TypographyShopView
         {
             try
             {
-                var dict = logic.GetStoreComponent();
+                MethodInfo getStoreComponent = logic.GetType().GetMethod("GetStoreComponent");
+                var dict = getStoreComponent.Invoke(logic, new object[0]) as List<ReportStoreComponentViewModel>;
                 if (dict != null)
                 {
                     dataGridView.Rows.Clear();
@@ -50,10 +54,8 @@ namespace TypographyShopView
                 {
                     try
                     {
-                        logic.SaveStoreComponentToExcelFile(new ReportBindingModel
-                        {
-                            FileName = dialog.FileName
-                        });
+                        MethodInfo saveStoreComponentToExcelFile = logic.GetType().GetMethod("SaveStoreComponentToExcelFile");
+                        saveStoreComponentToExcelFile.Invoke(logic, new object[] { new ReportBindingModel { FileName = dialog.FileName } });
                         MessageBox.Show("Выполнено", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     catch (Exception ex)
