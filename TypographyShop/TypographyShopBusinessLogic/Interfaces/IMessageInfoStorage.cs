@@ -9,5 +9,7 @@ namespace TypographyShopBusinessLogic.Interfaces
         List<MessageInfoViewModel> GetFullList();
         List<MessageInfoViewModel> GetFilteredList(MessageInfoBindingModel model);
         void Insert(MessageInfoBindingModel model);
+        List<MessageInfoViewModel> GetMessagesPage(MessageInfoBindingModel model);
+        int Count();
     }
 }

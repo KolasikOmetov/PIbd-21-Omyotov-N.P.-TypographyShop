@@ -69,5 +69,31 @@ namespace TypographyShopDatabaseImplement.Implements
                 context.SaveChanges();
             }
         }
+
+        public List<MessageInfoViewModel> GetMessagesPage(MessageInfoBindingModel model)
+        {
+            using (var context = new TypographyShopDatabase())
+            {
+                return context.Messages.Where(rec => (model.ClientId.HasValue &&
+                model.ClientId.Value == rec.ClientId) || !model.ClientId.HasValue)
+                    .Skip((model.Page.Value - 1) * model.PageSize.Value).Take(model.PageSize.Value)
+                    .ToList().Select(rec => new MessageInfoViewModel
+                    {
+                        MessageId = rec.MessageId,
+                        SenderName = rec.SenderName,
+                        DateDelivery = rec.DateDelivery,
+                        Subject = rec.Subject,
+                        Body = rec.Body
+                    }).ToList();
+            }
+        }
+
+        public int Count()
+        {
+            using (var context = new TypographyShopDatabase())
+            {
+                return context.Messages.Count();
+            }
+        }
     }
 }

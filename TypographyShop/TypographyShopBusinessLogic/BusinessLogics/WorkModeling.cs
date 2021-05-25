@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using TypographyShopBusinessLogic.BindingModels;
+using TypographyShopBusinessLogic.Enums;
 using TypographyShopBusinessLogic.Interfaces;
 using TypographyShopBusinessLogic.ViewModels;
 
@@ -50,6 +52,37 @@ namespace TypographyShopBusinessLogic.BusinessLogics
                 // отдыхаем
                 Thread.Sleep(employee.PauseTime);
             }
+            var requiredRawOrders = await Task.Run(() => _orderStorage.GetFilteredList(new OrderBindingModel { Status = OrderStatus.Требуются_материалы }));
+
+            foreach (var order in requiredRawOrders)
+            {
+                try
+                {
+                    _orderLogic.TakeOrderInWork(new ChangeStatusBindingModel
+                    {
+                        OrderId = order.Id,
+                        EmployeeId = employee.Id
+                    });
+
+                    var processedOrder = _orderStorage.GetElement(new OrderBindingModel
+                    {
+                        Id = order.Id
+                    });
+
+                    if (processedOrder.Status == OrderStatus.Требуются_материалы)
+                    {
+                        continue;
+                    }
+
+                    Thread.Sleep(employee.WorkingTime * rnd.Next(1, 5) * order.Count);
+                    _orderLogic.FinishOrder(new ChangeStatusBindingModel { OrderId = order.Id });
+                    Thread.Sleep(employee.PauseTime);
+                }
+                catch (Exception ex)
+                {
+                    ex.ToString();
+                }
+            }
             await Task.Run(() =>
             {
                 foreach (var order in orders)
@@ -64,7 +97,10 @@ namespace TypographyShopBusinessLogic.BusinessLogics
                         // отдыхаем
                         Thread.Sleep(employee.PauseTime);
                     }
-                    catch (Exception) { }
+                    catch (Exception ex)
+                    {
+                        ex.ToString();
+                    }
                 }
             });
         }
