@@ -50,7 +50,6 @@
             this.dataGridView = new System.Windows.Forms.DataGridView();
             this.buttonRefreshList = new System.Windows.Forms.Button();
             this.создатьБекапToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.письмаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.складыToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStripTypography.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();

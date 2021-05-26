@@ -25,8 +25,7 @@ namespace TypographyShopView
             try
             {
                 MethodInfo getStoreComponent = logic.GetType().GetMethod("GetStoreComponent");
-                var dict = getStoreComponent.Invoke(logic, new object[0]) as List<ReportStoreComponentViewModel>;
-                if (dict != null)
+                if (getStoreComponent.Invoke(logic, new object[0]) is List<ReportStoreComponentViewModel> dict)
                 {
                     dataGridView.Rows.Clear();
                     foreach (var elem in dict)

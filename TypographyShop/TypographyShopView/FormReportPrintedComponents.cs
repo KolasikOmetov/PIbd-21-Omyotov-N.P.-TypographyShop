@@ -25,8 +25,7 @@ namespace TypographyShopView
             try
             {
                 MethodInfo getPrintedComponent = logic.GetType().GetMethod("GetPrintedComponent");
-                var dict = getPrintedComponent.Invoke(logic, new object[0]) as List<ReportPrintedComponentViewModel>;
-                if (dict != null)
+                if (getPrintedComponent.Invoke(logic, new object[0]) is List<ReportPrintedComponentViewModel> dict)
                 {
                     dataGridView.Rows.Clear();
                     foreach (var elem in dict)

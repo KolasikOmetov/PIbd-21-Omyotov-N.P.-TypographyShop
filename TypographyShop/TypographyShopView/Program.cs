@@ -88,14 +88,18 @@ namespace TypographyShopView
                             var column = new DataGridViewTextBoxColumn
                             {
                                 Name = prop.Name,
-                                ReadOnly = true,
+                                ReadOnly = columnAttr.ReadOnly,
                                 HeaderText = columnAttr.Title,
                                 Visible = columnAttr.Visible,
-                                Width = columnAttr.Width
+                                Width = columnAttr.Width,
                             };
                             if (columnAttr.GridViewAutoSize != GridViewAutoSize.None)
                             {
                                 column.AutoSizeMode = (DataGridViewAutoSizeColumnMode)Enum.Parse(typeof(DataGridViewAutoSizeColumnMode), columnAttr.GridViewAutoSize.ToString());
+                            }
+                            if (columnAttr.Alignment != DataGridViewContentAlignment.NotSet)
+                            {
+                                column.DefaultCellStyle.Alignment = columnAttr.Alignment;
                             }
                             grid.Columns.Add(column);
                         }
