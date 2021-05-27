@@ -40,7 +40,7 @@ namespace TypographyShopBusinessLogic.ViewModels
         [Column(title: "Статус", width: 100)]
         [DataMember]
         public OrderStatus Status { get; set; }
-        [Column(title: "Дата создания", width: 100)]
+        [Column(title: "Дата создания", width: 100, dateType: "d M y" )]
         [DataMember]
         public DateTime DateCreate { get; set; }
         [Column(title: "Дата выполнения", width: 100)]

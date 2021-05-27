@@ -101,6 +101,7 @@ namespace TypographyShopView
                             {
                                 column.DefaultCellStyle.Alignment = columnAttr.Alignment;
                             }
+                            column.DefaultCellStyle.Format = columnAttr.DateType;
                             grid.Columns.Add(column);
                         }
                     }
