@@ -13,10 +13,12 @@ namespace TypographyShopBusinessLogic.BusinessLogics
         private readonly object locker = new object();
         private readonly IOrderStorage _orderStorage;
         private readonly IClientStorage _clientStorage;
-        public OrderLogic(IOrderStorage orderStorage, IClientStorage clientStorage)
+        private readonly IStoreStorage _storeStorage;
+        public OrderLogic(IOrderStorage orderStorage, IClientStorage clientStorage, IStoreStorage storeStorage)
         {
             _orderStorage = orderStorage;
             _clientStorage = clientStorage;
+            _storeStorage = storeStorage;
         }
         public List<OrderViewModel> Read(OrderBindingModel model)
         {
@@ -58,27 +60,34 @@ namespace TypographyShopBusinessLogic.BusinessLogics
                 {
                     throw new Exception("Не найден заказ");
                 }
-                if (order.Status != OrderStatus.Принят)
+                if (order.Status != OrderStatus.Принят && order.Status != OrderStatus.Требуются_материалы)
                 {
-                    throw new Exception("Заказ не в статусе \"Принят\"");
+                    throw new Exception("Заказ не принят в работу");
                 }
                 if (order.EmployeeId.HasValue)
                 {
                     throw new Exception("У заказа уже есть исполнитель");
                 }
-                _orderStorage.Update(new OrderBindingModel
+                var updatedOrderBindingModel = new OrderBindingModel
                 {
                     Id = order.Id,
                     ClientId = order.ClientId,
-                    EmployeeId = model.EmployeeId,
                     PrintedId = order.PrintedId,
                     Count = order.Count,
                     Sum = order.Sum,
                     DateCreate = order.DateCreate,
-                    DateImplement = DateTime.Now,
-                    Status = OrderStatus.Выполняется
-                });
-
+                };
+                if (!_storeStorage.CheckPrintedsByComponents(order.PrintedId, order.Count))
+                {
+                    updatedOrderBindingModel.Status = OrderStatus.Требуются_материалы;
+                }
+                else
+                {
+                    updatedOrderBindingModel.DateImplement = DateTime.Now;
+                    updatedOrderBindingModel.Status = OrderStatus.Выполняется;
+                    updatedOrderBindingModel.EmployeeId = model.EmployeeId;
+                }
+                _orderStorage.Update(updatedOrderBindingModel);
                 MailLogic.MailSendAsync(new MailSendInfo
                 {
                     MailAddress = _clientStorage.GetElement(new ClientBindingModel { Id = order.ClientId })?.Email,
@@ -98,8 +107,8 @@ namespace TypographyShopBusinessLogic.BusinessLogics
             {
                 Id = order.Id,
                 PrintedId = order.PrintedId,
-                ClientId = order.ClientId,
                 EmployeeId = order.EmployeeId,
+                ClientId = order.ClientId,
                 Count = order.Count,
                 Sum = order.Sum,
                 DateCreate = order.DateCreate,

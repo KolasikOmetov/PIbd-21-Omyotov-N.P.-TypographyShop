@@ -106,7 +106,7 @@ namespace TypographyShopBusinessLogic.BusinessLogics
                 {
                     try
                     {
-                        client.Connect(info.PopHost, info.PopPort, SecureSocketOptions.SslOnConnect);
+                        client.Connect(info.PopHost, info.PopPort, SecureSocketOptions.StartTls);
                         client.Authenticate(mailLogin, mailPassword);
                         for (int i = 0; i < client.Count; i++)
                         {
@@ -131,6 +131,20 @@ namespace TypographyShopBusinessLogic.BusinessLogics
                     }
                 });
             }
+        }
+
+        public List<MessageInfoViewModel> GetMessagesPage(MessageInfoBindingModel model)
+        {
+            if (model == null || !model.Page.HasValue || !model.PageSize.HasValue)
+            {
+                return null;
+            }
+            return _messageInfoStorage.GetMessagesPage(model);
+        }
+
+        public int Count()
+        {
+            return _messageInfoStorage.Count();
         }
     }
 }

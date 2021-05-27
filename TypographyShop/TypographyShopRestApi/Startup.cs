@@ -25,10 +25,14 @@ namespace TypographyShopRestApi
             services.AddTransient<IOrderStorage, OrderStorage>();
             services.AddTransient<IPrintedStorage, PrintedStorage>();
             services.AddTransient<IMessageInfoStorage, MessageInfoStorage>();
+            services.AddTransient<MailLogic>();
+            services.AddTransient<IComponentStorage, ComponentStorage>();
+            services.AddTransient<IStoreStorage, StoreStorage>();
             services.AddTransient<OrderLogic>();
             services.AddTransient<ClientLogic>();
             services.AddTransient<PrintedLogic>();
-            services.AddTransient<MailLogic>();
+            services.AddTransient<ComponentLogic>();
+            services.AddTransient<StoreLogic>();
             services.AddControllers().AddNewtonsoftJson();
             MailLogic.MailConfig(new MailConfig
             {
@@ -41,7 +45,7 @@ namespace TypographyShopRestApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IMessageInfoStorage messageInfoStorage)
         {
-            // создаем таймер
+            // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ
             var timer = new Timer(new TimerCallback(MailCheck), new MailCheckInfo
             {
                 PopHost = "pop.gmail.com",

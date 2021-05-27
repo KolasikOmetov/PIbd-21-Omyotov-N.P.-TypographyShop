@@ -6,6 +6,7 @@ namespace TypographyShowClientApp
 {
     public class Program
     {
+        public static int pageSize = 4;
         public static ClientViewModel Client { get; set; }
         public static void Main(string[] args) => CreateHostBuilder(args).Build().Run();
         public static IHostBuilder CreateHostBuilder(string[] args) =>

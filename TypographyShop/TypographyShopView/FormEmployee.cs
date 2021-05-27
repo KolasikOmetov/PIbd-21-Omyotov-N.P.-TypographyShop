@@ -20,7 +20,6 @@ namespace TypographyShopView
         public int Id { set { id = value; } }
         private readonly EmployeeLogic logic;
         private int? id;
-        private Dictionary<int, (string, int)> employeeComponents;
         public FormEmployee(EmployeeLogic service)
         {
             InitializeComponent();
