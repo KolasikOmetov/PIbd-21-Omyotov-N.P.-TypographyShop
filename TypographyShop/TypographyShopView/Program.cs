@@ -1,7 +1,9 @@
-﻿using System.Configuration;
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
 using System.Threading;
 using System.Windows.Forms;
+using TypographyShopBusinessLogic.Attributes;
 using TypographyShopBusinessLogic.BusinessLogics;
 using TypographyShopBusinessLogic.HelperModels;
 using TypographyShopBusinessLogic.Interfaces;
@@ -32,8 +34,7 @@ namespace TypographyShopView
             {
                 PopHost = ConfigurationManager.AppSettings["PopHost"],
                 PopPort = Convert.ToInt32(ConfigurationManager.AppSettings["PopPort"]),
-                Storage = container.Resolve<IMessageInfoStorage>(),
-                ClientStorage = container.Resolve<IClientStorage>()
+                Storage = container.Resolve<IMessageInfoStorage>()
             }, 0, 100000);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
@@ -49,6 +50,7 @@ namespace TypographyShopView
             currentContainer.RegisterType<IClientStorage, ClientStorage>(new HierarchicalLifetimeManager());
             currentContainer.RegisterType<IEmployeeStorage, EmployeeStorage>(new HierarchicalLifetimeManager());
             currentContainer.RegisterType<IMessageInfoStorage, MessageInfoStorage>(new HierarchicalLifetimeManager());
+            currentContainer.RegisterType<BackUpAbstractLogic, BackUpLogiс>(new HierarchicalLifetimeManager());
             currentContainer.RegisterType<ComponentLogic>(new HierarchicalLifetimeManager());
             currentContainer.RegisterType<OrderLogic>(new HierarchicalLifetimeManager());
             currentContainer.RegisterType<PrintedLogic>(new HierarchicalLifetimeManager());
@@ -66,6 +68,57 @@ namespace TypographyShopView
             MailLogic.MailCheck((MailCheckInfo)obj);
         }
 
+        public static void ConfigGrid<T>(List<T> data, DataGridView grid)
+        {
+            var type = typeof(T);
+            var config = new List<string>();
+            grid.Columns.Clear();
+            foreach (var prop in type.GetProperties())
+            {
+                // получаем список атрибутов
+                var attributes = prop.GetCustomAttributes(typeof(ColumnAttribute), true);
+                if (attributes != null && attributes.Length > 0)
+                {
+                    foreach (var attr in attributes)
+                    {
+                        // ищем нужный нам атрибут
+                        if (attr is ColumnAttribute columnAttr)
+                        {
+                            config.Add(prop.Name);
+                            var column = new DataGridViewTextBoxColumn
+                            {
+                                Name = prop.Name,
+                                ReadOnly = columnAttr.ReadOnly,
+                                HeaderText = columnAttr.Title,
+                                Visible = columnAttr.Visible,
+                                Width = columnAttr.Width,
+                            };
+                            if (columnAttr.GridViewAutoSize != GridViewAutoSize.None)
+                            {
+                                column.AutoSizeMode = (DataGridViewAutoSizeColumnMode)Enum.Parse(typeof(DataGridViewAutoSizeColumnMode), columnAttr.GridViewAutoSize.ToString());
+                            }
+                            if (columnAttr.Alignment != DataGridViewContentAlignment.NotSet)
+                            {
+                                column.DefaultCellStyle.Alignment = columnAttr.Alignment;
+                            }
+                            column.DefaultCellStyle.Format = columnAttr.DateType;
+                            grid.Columns.Add(column);
+                        }
+                    }
+                }
+            }
+            // добавляем строки
+            foreach (var elem in data)
+            {
+                List<object> objs = new List<object>();
+                foreach (var conf in config)
+                {
+                    var value = elem.GetType().GetProperty(conf).GetValue(elem);
+                    objs.Add(value);
+                }
+                grid.Rows.Add(objs.ToArray());
+            }
+        }
         public static int pageSize = 4;
     }
 }

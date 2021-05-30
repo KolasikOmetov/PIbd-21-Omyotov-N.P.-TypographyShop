@@ -1,8 +1,11 @@
 ﻿using Microsoft.Reporting.WinForms;
 using System;
+using System.Collections.Generic;
+using System.Reflection;
 using System.Windows.Forms;
 using TypographyShopBusinessLogic.BindingModels;
 using TypographyShopBusinessLogic.BusinessLogics;
+using TypographyShopBusinessLogic.ViewModels;
 using Unity;
 
 namespace TypographyShopView
@@ -31,12 +34,12 @@ namespace TypographyShopView
                 "c " + dateTimePickerFrom.Value.ToShortDateString() +
                 " по " + dateTimePickerTo.Value.ToShortDateString());
                 reportViewer.LocalReport.SetParameters(parameter);
-
-                var dataSource = logic.GetOrders(new ReportBindingModel
+                MethodInfo getOrders = logic.GetType().GetMethod("GetOrders");
+                var dataSource = getOrders.Invoke(logic, new object[] { new ReportBindingModel
                 {
                     DateFrom = dateTimePickerFrom.Value,
                     DateTo = dateTimePickerTo.Value
-                });
+                } }) as List<ReportOrdersViewModel>;
                 ReportDataSource source = new ReportDataSource("DataSetOrders", dataSource);
                 reportViewer.LocalReport.DataSources.Add(source);
                 reportViewer.RefreshReport();
@@ -63,12 +66,10 @@ namespace TypographyShopView
                 {
                     try
                     {
-                        logic.SaveOrdersToPdfFile(new ReportBindingModel
-                        {
-                            FileName = dialog.FileName,
+                        MethodInfo saveOrdersToPdfFile = logic.GetType().GetMethod("SaveOrdersToPdfFile");
+                        saveOrdersToPdfFile.Invoke(logic, new object[] { new ReportBindingModel { FileName = dialog.FileName,
                             DateFrom = dateTimePickerFrom.Value,
-                            DateTo = dateTimePickerTo.Value
-                        });
+                            DateTo = dateTimePickerTo.Value } });
                         MessageBox.Show("Выполнено", "Успех", MessageBoxButtons.OK,
                         MessageBoxIcon.Information);
                     }

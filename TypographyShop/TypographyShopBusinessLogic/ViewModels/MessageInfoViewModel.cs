@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.Serialization;
+using TypographyShopBusinessLogic.Attributes;
 
 namespace TypographyShopBusinessLogic.ViewModels
 {
@@ -12,16 +13,16 @@ namespace TypographyShopBusinessLogic.ViewModels
     {
         [DataMember]
         public string MessageId { get; set; }
-        [DisplayName("Отправитель")]
+        [Column(title: "Отправитель", width: 100)]
         [DataMember]
         public string SenderName { get; set; }
-        [DisplayName("Дата письма")]
+        [Column(title: "Дата письма", width: 50)]
         [DataMember]
         public DateTime DateDelivery { get; set; }
-        [DisplayName("Заголовок")]
+        [Column(title: "Заголовок", width: 150)]
         [DataMember]
         public string Subject { get; set; }
-        [DisplayName("Текст")]
+        [Column(title: "Текст", gridViewAutoSize: GridViewAutoSize.Fill)]
         [DataMember]
         public string Body { get; set; }
     }

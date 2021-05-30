@@ -1,6 +1,6 @@
-﻿using TypographyShopBusinessLogic.BindingModels;
+﻿using System.Collections.Generic;
+using TypographyShopBusinessLogic.BindingModels;
 using TypographyShopBusinessLogic.ViewModels;
-using System.Collections.Generic;
 
 namespace TypographyShopBusinessLogic.Interfaces
 {

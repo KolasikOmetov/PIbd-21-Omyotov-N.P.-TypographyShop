@@ -25,17 +25,7 @@ namespace TypographyShopView
         {
             try
             {
-                var list = logic.GetMessagesPage(new MessageInfoBindingModel
-                {
-                    Page = page,
-                    PageSize = Program.pageSize
-                });
-                if (list != null)
-                {
-                    dataGridView.DataSource = list;
-                    dataGridView.Columns[0].Visible = false;
-                    dataGridView.Columns[4].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                }
+                Program.ConfigGrid(logic.Read(null), dataGridView);
             }
             catch (Exception ex)
             {

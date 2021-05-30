@@ -115,7 +115,6 @@ namespace TypographyShopBusinessLogic.BusinessLogics
                             {
                                 info.Storage.Insert(new MessageInfoBindingModel
                                 {
-                                    ClientId = info.ClientStorage.GetElement(new ClientBindingModel{ Email = mail.Address })?.Id,
                                     DateDelivery = message.Date.DateTime,
                                     MessageId = message.MessageId,
                                     FromMailAddress = mail.Address,

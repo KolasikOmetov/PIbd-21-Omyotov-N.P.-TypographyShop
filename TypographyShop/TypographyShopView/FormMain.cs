@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Windows.Forms;
 using TypographyShopBusinessLogic.BindingModels;
 using TypographyShopBusinessLogic.BusinessLogics;
@@ -12,11 +13,14 @@ namespace TypographyShopView
         public new IUnityContainer Container { get; set; }
         private readonly OrderLogic _orderLogic;
         private readonly ReportLogic _report;
-        public FormMain(OrderLogic orderLogic, ReportLogic report)
+        private readonly BackUpAbstractLogic _backUpAbstractLogic;
+
+        public FormMain(OrderLogic orderLogic, ReportLogic report, BackUpAbstractLogic backUpAbstractLogic)
         {
             InitializeComponent();
             this._orderLogic = orderLogic;
             this._report = report;
+            this._backUpAbstractLogic = backUpAbstractLogic;
         }
         private void FormMain_Load(object sender, EventArgs e)
         {
@@ -26,19 +30,7 @@ namespace TypographyShopView
         {
             try
             {
-                var list = _orderLogic.Read(null);
-                if (list != null)
-                {
-                    dataGridView.DataSource = list;
-                    dataGridView.Columns[0].Visible = false;
-                    dataGridView.Columns[1].Visible = false;
-                    dataGridView.Columns[2].Visible = false;
-                    dataGridView.Columns[3].Visible = false;
-                }
-                else
-                {
-                    throw new Exception("Не удалось загрузить список заказов");
-                }
+                Program.ConfigGrid(_orderLogic.Read(null), dataGridView);
             }
             catch (Exception ex)
             {
@@ -88,7 +80,8 @@ namespace TypographyShopView
             {
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
-                    _report.SaveComponentsToWordFile(new ReportBindingModel { FileName = dialog.FileName });
+                    MethodInfo saveComponentsToWordFile = _report.GetType().GetMethod("SaveComponentsToWordFile");
+                    saveComponentsToWordFile.Invoke(_report, new object[] { new ReportBindingModel { FileName = dialog.FileName } });
                     MessageBox.Show("Выполнено", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
@@ -143,10 +136,8 @@ namespace TypographyShopView
             {
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
-                    _report.SaveStoresToWordFile(new ReportBindingModel
-                    {
-                        FileName = dialog.FileName
-                    });
+                    MethodInfo saveStoresToWordFile = _report.GetType().GetMethod("SaveStoresToWordFile");
+                    saveStoresToWordFile.Invoke(_report, new object[] { new ReportBindingModel { FileName = dialog.FileName } });
 
                     MessageBox.Show("Сохранение прошло успешно", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
@@ -175,6 +166,26 @@ namespace TypographyShopView
         {
             var form = Container.Resolve<FormMessages>();
             form.ShowDialog();
+        }
+
+        private void СоздатьБекапToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (_backUpAbstractLogic != null)
+                {
+                    var fbd = new FolderBrowserDialog();
+                    if (fbd.ShowDialog() == DialogResult.OK)
+                    {
+                        _backUpAbstractLogic.CreateArchive(fbd.SelectedPath);
+                        MessageBox.Show("Бекап создан", "Сообщение", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

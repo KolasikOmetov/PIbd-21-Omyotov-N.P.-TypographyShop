@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.Serialization;
+using System.Windows.Forms;
+using TypographyShopBusinessLogic.Attributes;
 using TypographyShopBusinessLogic.Enums;
 
 namespace TypographyShopBusinessLogic.ViewModels
@@ -11,6 +13,7 @@ namespace TypographyShopBusinessLogic.ViewModels
     [DataContract]
     public class OrderViewModel
     {
+        [Column(title: "Номер", width: 100)]
         [DataMember]
         public int Id { get; set; }
         [DataMember]
@@ -20,28 +23,28 @@ namespace TypographyShopBusinessLogic.ViewModels
         [DataMember]
         public int PrintedId { get; set; }
         [DataMember]
-        [DisplayName("ФИО Работника")]
+        [Column(title: "Исполнитель", width: 150)]
         public string EmployeeFIO { get; set; }
+        [Column(title: "Клиент", width: 150, alignment: DataGridViewContentAlignment.BottomRight)]
         [DataMember]
-        [DisplayName("ФИО Клиента")]
         public string ClientFIO { get; set; }
+        [Column(title: "Изделие", width: 150)]
         [DataMember]
-        [DisplayName("Изделие")]
         public string PrintedName { get; set; }
+        [Column(title: "Количество", width: 100, alignment: DataGridViewContentAlignment.BottomRight)]
         [DataMember]
-        [DisplayName("Количество")]
         public int Count { get; set; }
+        [Column(title: "Сумма", width: 50, alignment: DataGridViewContentAlignment.BottomRight, readOnly: false)]
         [DataMember]
-        [DisplayName("Сумма")]
         public decimal Sum { get; set; }
+        [Column(title: "Статус", width: 100)]
         [DataMember]
-        [DisplayName("Статус")]
         public OrderStatus Status { get; set; }
+        [Column(title: "Дата создания", width: 100, dateType: "d M y" )]
         [DataMember]
-        [DisplayName("Дата создания")]
         public DateTime DateCreate { get; set; }
+        [Column(title: "Дата выполнения", width: 100)]
         [DataMember]
-        [DisplayName("Дата выполнения")]
         public DateTime? DateImplement { get; set; }
     }
 }
